@@ -6,7 +6,7 @@
 const cfg=window.FIREBASE_CONFIG;
 if(!cfg||!cfg.apiKey)return;
 const PREFIX='korean-history-study-v2-',SDK='https://www.gstatic.com/firebasejs/10.12.2/';
-let auth=null,db=null,user=null,status='idle',busy=false;
+let auth=null,db=null,user=null,status='idle',busy=false,lastError='';
 const pending=new Map(),timers=new Map();
 
 // ---- 기록 비교 ----
@@ -39,7 +39,7 @@ function push(id,session){
 async function flushOne(id){
   const s=pending.get(id);if(!s||!user)return;pending.delete(id);
   try{await col().doc(id).set({data:JSON.stringify(s),updatedAt:stamp(s)||Date.now(),checked:done(s)});setStatus(pending.size?'syncing':'synced');}
-  catch{setStatus('error');}
+  catch(e){lastError=e?.code||String(e);console.error('[기록 저장 실패]',e);setStatus('error');}
 }
 async function flushAll(){for(const id of [...pending.keys()]){clearTimeout(timers.get(id));await flushOne(id);}}
 async function pull(){
@@ -54,7 +54,7 @@ async function pull(){
     });
     for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k||!k.startsWith(PREFIX))continue;const id=k.slice(PREFIX.length);if(!seen.has(id)){const l=getLocal(id);if(hasWork(l))push(id,l);}}
     if(!pending.size)setStatus('synced');
-  }catch{setStatus('error');}
+  }catch(e){lastError=e?.code||String(e);console.error('[기록 불러오기 실패]',e);setStatus('error');}
   if(changed)window.dispatchEvent(new CustomEvent('cloudsync-change',{detail:{pulled:true}}));
 }
 async function onUser(u){
@@ -82,7 +82,7 @@ function renderSlot(){
   slot.textContent='';
   if(user){
     const name=document.createElement('span');name.className='auth-name';name.textContent=user.displayName||user.email||'내 계정';
-    const st=document.createElement('span');st.className='auth-status';st.dataset.state=status;st.textContent=STATUS[status]||'';st.setAttribute('role','status');
+    const st=document.createElement('span');st.className='auth-status';st.dataset.state=status;st.textContent=STATUS[status]||'';if(status==='error'){st.textContent=lastError==='permission-denied'?'저장 실패 · 규칙 미적용':'저장 실패';st.title=lastError;}st.setAttribute('role','status');
     const out=document.createElement('button');out.type='button';out.className='auth-btn';out.textContent='로그아웃';out.addEventListener('click',signOut);
     slot.append(name,st,out);
   }else{
