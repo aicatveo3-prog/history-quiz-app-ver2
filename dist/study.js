@@ -23,7 +23,11 @@ function readAttempt(id){
     memorySessions.set(id,s);return s;
   }catch{storageAvailable=false;return null;}
 }
-function saveSession(){if(!session)return;memorySessions.set(session.examId,session);try{localStorage.setItem(key(session.examId),JSON.stringify(session));}catch{storageAvailable=false;}}
+function saveSession(){if(!session)return;session.updatedAt=Date.now();memorySessions.set(session.examId,session);try{localStorage.setItem(key(session.examId),JSON.stringify(session));}catch{storageAvailable=false;}window.CloudSync?.push(session.examId,session);}
+// 로그인 동기화(sync.js)가 기록을 내려받았거나 로그아웃했을 때: 메모리에 캐시한 기록을 비우고 화면을 새로 그린다.
+window.addEventListener('cloudsync-change',event=>{memorySessions.clear();
+  if(event.detail?.signedOut){session=null;activeExam=null;history.replaceState(null,'',location.pathname);renderRoute();}
+  else if(view==='home')renderRoute();});
 function newAttempt(id){const e=typeof id==='string'?setById(id):examById(id);if(!e)throw Error('지원하지 않는 회차입니다.');const n=e.questions.length;session={examId:e.id,status:'active',answers:Array(n).fill(null),checked:Array(n).fill(false),index:0};activeExam=e;saveSession();return session;}
 function navigate(hash){if(location.hash!==hash)history.replaceState(null,'',hash||location.pathname);renderRoute();window.scrollTo(0,0);}
 function startStudy(id,fresh=false){id=idOf(id);if(fresh||!readAttempt(id))newAttempt(id);returnToResult=false;navigate(studyHash(id));}
