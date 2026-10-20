@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="한국사능력검정시험 기출을 한 문제씩 풀고, 정답과 해설을 바로 확인하는 한국사 학습 사이트.">
+  <title>한국사 기출 학습</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d3534'/%3E%3Cpath d='M8 9h16v14H8z' fill='none' stroke='%23d9ef87' stroke-width='2'/%3E%3Cpath d='M16 9v14M11 13h2M19 13h2M11 17h2M19 17h2' stroke='%23d9ef87' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=20261007-navigation">
+  <link rel="stylesheet" href="learning.css?v=20261020-switch">
+  <link rel="stylesheet" href="polish.css?v=20261020-switch">
+  <link rel="stylesheet" href="theory.css?v=20261019-quiz2">
+  <link rel="stylesheet" href="split.css?v=20261020-switch">
+  <link rel="stylesheet" href="units.css?v=20261020-units">
+  <script defer src="exams.js"></script>
+  <script defer src="explanations.js"></script>
+  <script defer src="details.js"></script>
+  <script defer src="theory-data.js"></script>
+  <script defer src="units.js?v=20261020-units"></script>
+  <script defer src="study.js?v=20261020-units"></script>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="index.html" aria-label="한국사 기출 학습 홈"><span class="brand-mark">史</span><span>한국사 기출 학습</span></a><nav class="site-nav" aria-label="주요 메뉴"><a href="index.html" aria-current="page">기출 풀기</a><a href="theory.html">이론 정리</a></nav></header>
+  <main id="app"></main>
+  <dialog id="confirm-dialog" aria-labelledby="dialog-title"><div class="dialog-body"><h2 id="dialog-title"></h2><p id="dialog-message"></p><div class="dialog-actions"><button class="button secondary" id="dialog-cancel">계속 풀기</button><button class="button primary" id="dialog-confirm">처음부터 풀기</button></div></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <noscript>기출문제를 풀려면 브라우저에서 JavaScript를 활성화해 주세요.</noscript>
+</body>
+</html>

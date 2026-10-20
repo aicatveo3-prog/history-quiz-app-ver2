@@ -1,0 +1,35 @@
+/* 회차별 풀기: 모든 회차를 같은 크기의 카드 1단으로 쌓는다 */
+.exam-list{grid-template-columns:1fr;gap:14px}
+/* 단원별 풀기 · 특수 분류 화면 */
+.home-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 0 34px}
+.home-tabs a{position:relative;display:block;background:#fff;border:2px solid #dce4e4;border-radius:14px;padding:18px 22px 20px;text-decoration:none;color:var(--ink);transition:border-color .15s,box-shadow .15s,transform .15s}
+.home-tabs b{display:block;font-size:1.125rem;letter-spacing:-.03em;line-height:1.4}
+.home-tabs span{display:block;font-size:.8125rem;color:var(--muted);margin-top:3px}
+.home-tabs a:hover{border-color:#9db9a9;box-shadow:0 6px 16px #1c503312;transform:translateY(-1px)}
+.home-tabs a[aria-current="page"]{background:var(--green);border-color:var(--green);box-shadow:0 8px 18px #0d494530;transform:none}
+.home-tabs a[aria-current="page"] b{color:#fff}
+.home-tabs a[aria-current="page"] span{color:#c9dcd6}
+.home-tabs a[aria-current="page"]:after{content:"";position:absolute;left:22px;right:22px;bottom:-2px;height:5px;border-radius:5px;background:var(--lime)}
+.home-tabs a:focus-visible{outline:3px solid #df9a26;outline-offset:3px}
+.era-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px 28px 14px;margin-bottom:18px;box-shadow:0 3px 14px #21483504}
+.era-head h2{font-size:1.3rem;letter-spacing:-.04em;line-height:1.4}
+.era-head p{font-size:.875rem;color:var(--muted);margin-top:3px}
+.set-list{list-style:none;margin:16px 0 0;padding:0}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 0;border-top:1px solid #eaf0ea}
+.set-row:first-child{border-top:0}
+.set-main{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;min-width:0}
+.set-main strong{font-size:1rem;letter-spacing:-.02em;word-break:keep-all}
+.set-sub{font-size:.8125rem;color:var(--muted)}
+.set-count{font-size:.8125rem;color:var(--green);background:#edf3eb;border-radius:20px;padding:2px 10px;white-space:nowrap}
+.set-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.set-actions .button{min-height:40px;padding:8px 18px;background:#f1f6ef;border-color:#dde7d9;color:var(--green)}
+.set-actions .button:hover{background:#e6efdf}
+.set-all{background:#f7faf3;margin:0 -28px;padding:15px 28px;border-top:0;border-bottom:1px solid #e3ecdc}
+.set-all .set-main strong{color:var(--green)}
+.set-all .button{background:var(--green);border-color:var(--green);color:#fff}
+.set-all .button:hover{background:#124a3e}
+.special-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+.special-grid .set-main{flex-direction:column;align-items:flex-start;gap:6px}
+.special-grid .era-card{margin-bottom:0;display:flex;flex-direction:column}
+.special-grid .set-list{margin-top:auto;padding-top:14px}
+@media(max-width:720px){.era-card{padding:20px 18px 8px}.set-all{margin:0 -18px;padding:14px 18px}.set-row{align-items:flex-start;flex-direction:column;gap:10px}.set-actions{width:100%}.home-tabs{grid-template-columns:1fr;gap:10px;margin-bottom:26px}.home-tabs a{padding:14px 18px 16px}.home-tabs a[aria-current="page"]:after{left:18px;right:18px}}

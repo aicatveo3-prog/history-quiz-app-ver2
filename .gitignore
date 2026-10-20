@@ -1,0 +1,6 @@
+﻿tools/tessdata/
+__pycache__/
+*.pyc
+/*.jpg
+/tab-design-options.html
+node_modules/
