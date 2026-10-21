@@ -21,7 +21,11 @@
 .study-layout{scroll-margin-top:12px}
 
 /* 문제 카드 아래 답 선택 줄 */
-.answer-bar{display:flex;align-items:center;gap:12px;padding:12px 18px;border-top:1px solid #e6ece3;background:#f7faf4;flex-shrink:0}
+.answer-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:12px 18px;border-top:1px solid #e6ece3;background:#f7faf4;flex-shrink:0}
+/* 이전/다음 문제: 항상 문제 바로 아래에만 둔다(해설 칸에는 두지 않는다) */
+.answer-nav{flex:1 0 100%;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.answer-nav .button{width:100%;min-height:44px;padding:0 14px}
+.answer-bar .button[data-previous]:before{content:'←';margin-right:8px}
 .answer-label{font-size:.75rem;font-weight:700;color:var(--green);white-space:nowrap}
 .answer-bar .choice-row{flex:1 1 auto;margin:0;max-width:none;min-width:0;gap:8px}
 .answer-bar .choice{height:46px;font-size:1.3rem}
@@ -37,9 +41,6 @@
 .idle-card strong{color:var(--green)}
 .feedback-card .feedback{border-top:0}
 .deep-col{display:grid;gap:22px;align-content:start;min-width:0}
-.deep-next{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
-.deep-next .button{width:100%;justify-content:space-between}
-.deep-next .button:after{content:'→'}
 .deep-theory-link{margin-top:18px}
 
 @media(min-width:901px){
@@ -47,7 +48,7 @@
   /* 풀이 화면에서는 상단 메뉴도 넓어진 본문 너비에 맞춘다 */
   body:has(.study-wrap) .site-header{padding-left:max(32px,calc((100% - 1840px)/2 + 32px));padding-right:max(32px,calc((100% - 1840px)/2 + 32px))}
   /* 문제 칸 너비: 문제 이미지가 화면 높이 안에 들어오도록 가로세로 비율로 계산(최소 500px, 최대 780px). 나머지 폭은 전부 해설 칸이 쓴다. */
-  .study-layout{--qpane:clamp(500px,calc((100vh - 232px) * var(--qratio,.72) + 40px),780px);--qpane:clamp(500px,calc((100dvh - 232px) * var(--qratio,.72) + 40px),780px);grid-template-columns:minmax(0,var(--qpane)) 28px minmax(0,1fr);gap:0}
+  .study-layout{--qpane:clamp(500px,calc((100vh - 290px) * var(--qratio,.72) + 40px),780px);--qpane:clamp(500px,calc((100dvh - 290px) * var(--qratio,.72) + 40px),780px);grid-template-columns:minmax(0,var(--qpane)) 28px minmax(0,1fr);gap:0}
   /* 화면 배분: 문제와 해설 사이의 조절 막대(끌어서 조절) */
   /* 접힌 상태: 문제 칸은 좁은 막대 카드(제목·펼치기·다음 문제)만 남기고 나머지는 모두 해설이 쓴다 */
   .study-layout.is-folded{grid-template-columns:minmax(0,248px) minmax(0,1fr);gap:24px}
@@ -58,10 +59,14 @@
   .split-handle:focus-visible{outline:3px solid #df9a26;outline-offset:-3px}
   .is-resizing{user-select:none;-webkit-user-select:none;cursor:col-resize}
   /* 문제 카드는 안에 스크롤바를 두지 않고 문제 전체를 보여 준다. 카드가 화면보다 높아지면(card-tall) 고정을 풀고 페이지와 함께 스크롤한다. */
-  .question-card{position:sticky;top:16px;display:flex;flex-direction:column}
-  .study-layout.card-tall .question-card{position:static}
+  .question-card{position:sticky;top:16px;display:flex;flex-direction:column;overflow:clip}
+  .study-layout.card-tall .question-card{position:static;overflow:visible}
+  /* 문제가 화면보다 길어 카드를 고정하지 못할 때도, 이전/다음 줄은 화면 아래에 붙어 문제와 함께 따라온다 */
+  .study-layout.card-tall .answer-bar{position:sticky;bottom:0;z-index:6;border-radius:0 0 14px 14px;box-shadow:0 -8px 18px #1f3a3014}
   .question-caption,.question-tools{flex-shrink:0}
   .question-body{flex:none;overflow:visible;padding:14px 18px}
+  /* 낮은 창에서도 문제 카드(이전/다음 줄 포함)가 화면 안에 들어와 계속 따라오도록 문제 이미지 높이를 제한한다 */
+  .question-body #question-image{max-height:calc(100vh - 300px);max-height:calc(100dvh - 300px);object-fit:contain}
   .study-layout .deep-explain{margin-top:0;padding:26px 28px 28px}
   .study-layout .deep-explain>h2{font-size:1.0625rem;margin-bottom:16px;padding-bottom:12px}
   .study-layout .deep-grid{gap:22px}
@@ -74,8 +79,13 @@
 }
 
 @media(max-width:900px){
-  .answer-bar{flex-wrap:wrap;padding:12px 14px}
-  .answer-bar .choice-row{flex-basis:100%;order:2}
-  .answer-bar .button{order:3;width:100%}
+  /* 좁은 화면: 선택지·이전/다음 줄을 화면 아래에 고정해 해설을 읽는 동안에도 따라다니게 한다 */
+  .study-wrap:has(.answer-bar){padding-bottom:178px}
+  .answer-bar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 14px calc(10px + env(safe-area-inset-bottom));gap:8px 10px;border-top:1px solid #cfd9d0;box-shadow:0 -8px 22px #1f3a3022}
+  .answer-bar .choice-row{flex:1 1 100%;order:2}
+  .answer-bar .choice{height:44px}
+  .answer-bar>.button[data-check],.answer-bar>.button[data-retry]{order:1;margin-left:auto;min-height:40px;padding:0 14px}
+  .answer-nav{order:3}
   .answer-label{order:1}
+  .answer-nav .button{min-height:42px}
 }
