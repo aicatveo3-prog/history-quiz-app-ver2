@@ -18,8 +18,8 @@ function createApp({blockedStorage=false,hash=''}={}){
 }
 const app=createApp(),data=app.run('window.EXAMS');
 // 기출 풀이 화면의 해설: 새로 만드는 중(현재 77회만). 이론 정리는 theory-explanations.js를 따로 쓴다.
-assert.equal(Object.keys(app.run('window.EXPLANATIONS')).length,400);
-assert.equal(Object.keys(app.run('window.DETAILS')).length,400);
+assert.equal(Object.keys(app.run('window.EXPLANATIONS')).length,450);
+assert.equal(Object.keys(app.run('window.DETAILS')).length,450);
 for(const exam of data){
   const hasExp=app.run(`Object.keys(explanations).some(k=>k.startsWith('${exam.id}-'))`); // exams added later have questions + answer key only
   const fullExp=app.run(`Array.from({length:50},(_,i)=>'${exam.id}-'+(i+1)).every(k=>k in explanations)`); // all 50 have explanations
@@ -157,7 +157,7 @@ console.log('PASS 77 sourced extras, corrected facts present and stale wording g
 
 // --- 해설 없이 추가된 회차: 문제·정답만 제공 ---
 const unexplainedIds=data.filter(e=>!app.run(`Object.keys(explanations).some(k=>k.startsWith('${e.id}-'))`)).map(e=>e.id);
-assert.deepEqual(Array.from(unexplainedIds),[70,71,72]);
+assert.deepEqual(Array.from(unexplainedIds),[70,71]);
 assert.deepEqual(Array.from(data,e=>e.id),[70,71,72,73,74,75,76,77,78,79,80],'all eleven exams are present, oldest first');
 const homeApp=createApp();homeApp.run('renderHome()');
 assert.ok(homeApp.html().includes('해설 준비 중'));assert.ok(homeApp.html().includes('제80회 심화'),'newest exam is featured');
