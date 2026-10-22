@@ -1,0 +1,156 @@
+/* 왕 연표 페이지 (kings.html) */
+.kt-wrap{max-width:1160px;margin:0 auto;padding:34px 24px 60px}
+.kt-intro{max-width:760px;margin-bottom:18px}
+.kt-intro .eyebrow{margin:0 0 4px;font-size:.8125rem;font-weight:700;color:var(--green);letter-spacing:.02em}
+.kt-intro h1{margin:0 0 8px}
+.kt-intro p{margin:0;color:var(--muted);font-size:.9375rem}
+.kt-empty{padding:40px 24px;text-align:center;color:var(--muted)}
+
+/* 상단 도구 막대: 시대 이동 + 눈금 간격 (스크롤해도 위에 붙어 있음) */
+.kt-toolbar{position:sticky;top:0;z-index:6;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;margin:0 -24px;padding:10px 24px;background:#f5f7f3ee;backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.kt-jump{display:flex;flex-wrap:wrap;gap:6px}
+.kt-jump a{padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-size:.8125rem;font-weight:650;text-decoration:none;white-space:nowrap}
+.kt-jump a:hover,.kt-jump a:focus-visible{border-color:var(--green);color:var(--green)}
+.kt-zoom{display:inline-flex;border:1px solid var(--line);border-radius:999px;background:#fff;padding:2px}
+.kt-zoom button{border:0;background:none;font:inherit;font-size:.8125rem;font-weight:650;color:var(--muted);padding:5px 12px;border-radius:999px;cursor:pointer}
+.kt-zoom button[aria-pressed=true]{background:var(--green);color:#fff}
+.kt-legend{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin:14px 0 0;font-size:.75rem;color:var(--muted)}
+.kt-legend>span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.kt-key{display:inline-block;width:18px;height:12px;vertical-align:middle}
+.kt-key-band{background:#e7ece6;border-top:2px solid var(--green)}
+.kt-key-line{height:0;border-top:2px solid var(--green);position:relative}
+.kt-key-line::before{content:"";position:absolute;left:-3px;top:-5px;width:8px;height:8px;border-radius:50%;background:var(--green)}
+.kt-key-dash{background:#e7ece6;outline:1px dashed var(--green);outline-offset:-1px;border-top:2px dashed var(--green)}
+
+/* 구간 */
+.kt-section{margin-top:34px;scroll-margin-top:calc(var(--kt-bar,56px) + 8px)}
+.kt-sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.kt-sec-head h2{margin:0;font-size:1.375rem}
+.kt-sec-head p{margin:0;font-size:.8125rem;color:var(--muted)}
+.kt-note{margin:6px 0 0;font-size:.75rem;color:var(--muted);max-width:760px}
+.kt-frame{--axis:48px;margin-top:12px}
+.kt-frame.is-wide{max-width:620px}
+.kt-lanehead,.kt-chart{display:grid;grid-template-columns:var(--axis) repeat(var(--lanes),minmax(0,1fr));column-gap:6px}
+.kt-lanehead{position:sticky;top:var(--kt-bar,56px);z-index:4;padding:8px 0 6px;background:#f5f7f3f2;border-bottom:1px solid var(--line)}
+.kt-lane-name{display:flex;align-items:center;gap:5px;min-width:0;font-size:.8125rem;font-weight:750;color:var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kt-lane-name::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--c)}
+.kt-chart{position:relative;grid-auto-rows:100%;margin-top:10px;margin-bottom:10px}
+.kt-grid{position:absolute;inset:0 0 0 var(--axis);pointer-events:none}
+.kt-grid i{position:absolute;left:0;right:0;height:0;border-top:1px solid #e9eee8}
+.kt-grid i.is-major{border-top-color:#dfe6de}
+.kt-grid i.is-century{border-top-color:#c9d3c8}
+.kt-axis{position:relative}
+.kt-tick{position:absolute;right:4px;transform:translateY(-50%);font-size:.6875rem;line-height:1;color:#7d8c86;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kt-tick.is-century{font-weight:750;color:#43554e}
+.kt-lane{position:relative;min-width:0}
+
+/* 재위 띠: 연한 바탕 + 즉위한 해의 진한 선 */
+.kt-band{position:absolute;left:0;right:0;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;margin:0;padding:3px 6px 0 9px;border:0;border-top:2px solid var(--c);border-radius:0 0 5px 5px;background:var(--t);color:#1d2b28;font:inherit;text-align:left;cursor:pointer;overflow:hidden}
+.kt-band::before{content:"";position:absolute;left:0;top:-2px;width:7px;height:7px;border-radius:0 0 7px 0;background:var(--c)}
+.kt-band:hover{filter:brightness(.97)}
+.kt-band:focus-visible,.kt-mark:focus-visible{outline:3px solid #1d2b28;outline-offset:1px;z-index:3}
+.kt-label{display:block;pointer-events:none}
+.kt-name{display:block;font-size:.8125rem;font-weight:750;line-height:1.25;word-break:keep-all;overflow-wrap:anywhere}
+.kt-name small{font-size:.625rem;font-weight:650;color:var(--ink);margin-right:1px}
+.kt-name em{font-style:normal;font-size:.625rem;font-weight:700;margin-left:4px;padding:0 4px;border-radius:4px;background:#fff;color:var(--ink)}
+.kt-alt{display:none}
+.kt-years{display:block;margin-top:1px;font-size:.6875rem;line-height:1.25;color:#55645f;font-variant-numeric:tabular-nums}
+.kt-years>span{white-space:nowrap}
+.kt-years abbr{margin-left:3px;text-decoration:none;font-weight:800;color:var(--ink)}
+.kt-band.size-m .kt-years{display:none}
+.kt-band.size-s{padding-top:0}
+.kt-band.size-s .kt-name{font-size:.6875rem;line-height:1.1}
+.kt-band.size-s .kt-name small,.kt-band.size-s .kt-years{display:none}
+.kt-band.size-xs .kt-label{display:none}
+.kt-band.after-mark{padding-top:15px}
+.kt-band.after-mark.size-m .kt-label,.kt-band.after-mark.size-s .kt-label{display:none}
+.kt-band.is-cut-top{border-top-style:dotted}
+.kt-band.is-cut-top::before{display:none}
+.kt-band.is-cut-bottom{border-radius:0;-webkit-mask-image:linear-gradient(#000 calc(100% - 14px),#0004);mask-image:linear-gradient(#000 calc(100% - 14px),#0004)}
+.kt-band.is-uncertain{border-top-style:dashed;outline:1px dashed var(--c);outline-offset:-1px}
+
+/* 1년이 안 되는 재위 */
+.kt-mark{position:absolute;left:0;right:0;z-index:2;height:14px;margin:0;padding:0 6px 0 9px;border:0;border-top:2px solid var(--c);background:none;font:inherit;text-align:left;cursor:pointer;overflow:hidden}
+.kt-mark span{display:block;font-size:.625rem;font-weight:700;line-height:12px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kt-mark.is-uncertain{border-top-style:dashed}
+
+/* 나라의 시작과 끝 */
+.kt-edge{position:absolute;left:0;right:0;font-size:.625rem;font-weight:700;color:var(--c);text-align:center;pointer-events:none;white-space:nowrap}
+.kt-edge.is-start{transform:translateY(-100%);padding-bottom:2px}
+.kt-edge:not(.is-start){padding-top:3px;border-top:1px dashed var(--c)}
+
+/* 한 나라만 있는 구간: 띠가 넓어서 정보를 한 줄에 */
+.is-wide .kt-label{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px}
+.is-wide .kt-name{font-size:.875rem}
+.is-wide .kt-alt{display:inline;font-size:.75rem;color:#55645f}
+.is-wide .kt-years{font-size:.75rem}
+.is-wide .kt-band.size-m{padding-top:1px}
+.is-wide .kt-band.size-m .kt-years{display:block}
+/* 넓은 칸에서 재위가 짧은 왕: 띠 오른쪽 끝에 이름표를 띄운다 */
+.is-wide .kt-band.size-s,.is-wide .kt-band.size-xs{overflow:visible}
+.is-wide .kt-band.size-s .kt-label,.is-wide .kt-band.size-xs .kt-label{display:flex;z-index:3;position:absolute;right:8px;top:50%;transform:translateY(calc(-50% + var(--dy,0px)));padding:1px 8px;border:1px solid var(--c);border-radius:999px;background:#fff;white-space:nowrap}
+.is-wide .kt-band.size-s .kt-name,.is-wide .kt-band.size-xs .kt-name{font-size:.75rem;line-height:1.3}
+.is-wide .kt-band.size-s .kt-name small,.is-wide .kt-band.size-xs .kt-name small{display:inline}
+.is-wide .kt-band.size-s .kt-years,.is-wide .kt-band.size-xs .kt-years{display:block;font-size:.6875rem;line-height:1.3;margin:0}
+.is-wide .kt-band.size-s .kt-alt,.is-wide .kt-band.size-xs .kt-alt{display:none}
+.is-wide .kt-band.is-picked .kt-label{background:var(--c)}
+
+/* 선택한 왕과 같은 시기 왕 */
+.has-pick .kt-band.is-dim,.has-pick .kt-mark.is-dim{opacity:.32}
+.kt-band.is-near{box-shadow:inset 0 0 0 2px var(--c)}
+.kt-band.is-picked{background:var(--c);color:#fff;opacity:1}
+.kt-band.is-picked .kt-name small,.kt-band.is-picked .kt-years,.kt-band.is-picked .kt-years abbr,.kt-band.is-picked .kt-alt{color:#ffffffe0}
+.kt-band.is-picked::before{background:#fff}
+.kt-mark.is-picked{background:var(--c)}
+.kt-mark.is-picked span{color:#fff}
+
+/* 정보 창: 모바일은 아래에서 올라오고, 넓은 화면은 오른쪽 아래에 뜸 */
+.kt-sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;max-height:min(58vh,460px);overflow:auto;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -6px 28px #183c3024;border-top:1px solid var(--line)}
+.kt-sheet-card{position:relative;padding:18px 20px 22px;border-top:4px solid var(--c);border-radius:18px 18px 0 0}
+.kt-close{position:absolute;top:8px;right:10px;width:36px;height:36px;border:0;border-radius:50%;background:#f1f4f1;font-size:1.4rem;line-height:1;color:var(--muted);cursor:pointer}
+.kt-sheet-kingdom{margin:0;font-size:.75rem;font-weight:750;color:var(--c)}
+.kt-sheet-card h3{margin:2px 0 2px;font-size:1.375rem;letter-spacing:-.03em}
+.kt-sheet-card h3 small{font-size:.875rem;font-weight:600;color:var(--muted)}
+.kt-sheet-years{margin:0 0 8px;font-size:.9375rem;font-weight:650;font-variant-numeric:tabular-nums}
+.kt-sheet-years span{margin-left:6px;padding:2px 8px;border-radius:999px;background:#f1f4f1;font-size:.75rem;color:var(--ink)}
+.kt-sheet-note{margin:0 0 6px;font-size:.8125rem;color:var(--muted)}
+.kt-sheet-card h4{margin:12px 0 6px;font-size:.8125rem;color:var(--ink)}
+.kt-near{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.kt-near li{display:grid;grid-template-columns:76px 1fr;gap:8px;align-items:start}
+.kt-near b{font-size:.75rem;color:var(--c);padding-top:5px}
+.kt-near span{display:flex;flex-wrap:wrap;gap:5px}
+.kt-near button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px;font:inherit;font-size:.8125rem;cursor:pointer}
+.kt-near button:hover,.kt-near button:focus-visible{border-color:var(--green);color:var(--green)}
+.kt-none{margin:0;font-size:.8125rem;color:var(--muted)}
+.has-pick .kt-wrap{padding-bottom:min(60vh,480px)}
+
+@media(min-width:900px){
+  .kt-sheet{left:auto;right:24px;bottom:24px;width:340px;max-height:calc(100vh - 140px);border-radius:16px;box-shadow:0 10px 36px #183c3030;border:1px solid var(--line)}
+  .kt-sheet-card{border-radius:16px}
+  .has-pick .kt-wrap{padding-bottom:60px}
+  .kt-frame:not(.is-wide){max-width:calc(100% - 360px)}
+}
+@media(max-width:600px){
+  .kt-wrap{padding:24px 12px 48px}
+  .kt-toolbar{margin:0 -12px;padding:8px 12px;gap:8px}
+  .kt-jump{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:100%}
+  .kt-jump::-webkit-scrollbar{display:none}
+  .kt-jump a{padding:6px 10px}
+  .kt-zoom button{padding:5px 10px}
+  .kt-frame{--axis:40px}
+  .kt-lanehead,.kt-chart{column-gap:4px}
+  .kt-lane-name{font-size:.75rem;gap:4px}
+  .kt-tick{font-size:.625rem;right:3px}
+  .kt-band{padding:2px 4px 0 7px}
+  .kt-frame:not(.is-wide) .kt-name{font-size:.75rem}
+  .kt-frame:not(.is-wide) .kt-name small{display:none}
+  .kt-frame:not(.is-wide) .kt-years{font-size:.625rem}
+  .kt-near li{grid-template-columns:64px 1fr}
+}
+@media(prefers-reduced-motion:no-preference){.kt-band,.kt-mark{transition:opacity .15s,background-color .15s}}
+@media print{
+  .kt-toolbar,.kt-sheet{display:none}
+  .kt-lanehead{position:static}
+  .kt-section{break-inside:auto}
+  .has-pick .kt-band.is-dim{opacity:1}
+}
