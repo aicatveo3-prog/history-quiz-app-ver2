@@ -1,40 +1,40 @@
 /* 왕 연표 페이지 (kings.html) */
-.kt-wrap{max-width:1160px;margin:0 auto;padding:34px 24px 60px}
+.kt-wrap{max-width:none;margin:0 auto;padding:34px 24px 60px}
 .kt-intro{max-width:760px;margin-bottom:18px}
 .kt-intro .eyebrow{margin:0 0 4px;font-size:.8125rem;font-weight:700;color:var(--green);letter-spacing:.02em}
 .kt-intro h1{margin:0 0 8px}
 .kt-intro p{margin:0;color:var(--muted);font-size:.9375rem}
 .kt-empty{padding:40px 24px;text-align:center;color:var(--muted)}
 
-/* 상단 도구 막대: 시대 이동 + 눈금 간격 (스크롤해도 위에 붙어 있음) */
-.kt-toolbar{position:sticky;top:0;z-index:6;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;margin:0 -24px;padding:10px 24px;background:#f5f7f3ee;backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+/* 상단 도구 막대: 시대 이동 + 확대·축소 안내 (스크롤해도 위에 붙어 있음) */
+.kt-toolbar{position:sticky;top:0;z-index:6;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;margin:0 -24px;padding:10px 24px;background:#f5f7f3f2;border-bottom:1px solid var(--line)}
 .kt-jump{display:flex;flex-wrap:wrap;gap:6px}
 .kt-jump a{padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-size:.8125rem;font-weight:650;text-decoration:none;white-space:nowrap}
 .kt-jump a:hover,.kt-jump a:focus-visible{border-color:var(--green);color:var(--green)}
-.kt-zoom{display:inline-flex;border:1px solid var(--line);border-radius:999px;background:#fff;padding:2px}
-.kt-zoom button{border:0;background:none;font:inherit;font-size:.8125rem;font-weight:650;color:var(--muted);padding:5px 12px;border-radius:999px;cursor:pointer}
-.kt-zoom button[aria-pressed=true]{background:var(--green);color:#fff}
+.kt-zoom-hint{display:inline-flex;align-items:center;gap:6px 12px;flex-wrap:wrap;margin:0;font-size:.75rem;color:var(--muted)}
+.kt-zoom-hint kbd{display:inline-block;min-width:1.5em;padding:1px 6px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:#fff;font:inherit;font-size:.6875rem;font-weight:700;line-height:1.5;color:var(--ink);text-align:center}
+.kt-zoom-hint b{padding:2px 9px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:.75rem;font-weight:750;color:var(--green);font-variant-numeric:tabular-nums}
 .kt-legend{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin:14px 0 0;font-size:.75rem;color:var(--muted)}
 .kt-legend>span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .kt-key{display:inline-block;width:18px;height:12px;vertical-align:middle}
 .kt-key-band{background:#e7ece6;border-top:2px solid var(--green)}
 .kt-key-line{height:0;border-top:2px solid var(--green);position:relative}
 .kt-key-line::before{content:"";position:absolute;left:-3px;top:-5px;width:8px;height:8px;border-radius:50%;background:var(--green)}
+.kt-key-minor{background:#eef1ee;border-top:2px solid #b9c4bc}
+.kt-key-gap{border:1px dashed #b9c4bc;background:repeating-linear-gradient(135deg,#f8f9f7 0 4px,#e9ede8 4px 8px)}
 .kt-key-dash{background:#e7ece6;outline:1px dashed var(--green);outline-offset:-1px;border-top:2px dashed var(--green)}
+.kt-notes{margin:10px 0 0;font-size:.8125rem;color:var(--muted);max-width:760px}
+.kt-notes summary{cursor:pointer;font-weight:650;color:var(--ink)}
+.kt-notes ul{margin:6px 0 0;padding-left:18px}
+.kt-notes li{margin:3px 0}
 
-/* 구간 */
-.kt-section{margin-top:34px;scroll-margin-top:calc(var(--kt-bar,56px) + 8px)}
-.kt-sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
-.kt-sec-head h2{margin:0;font-size:1.375rem}
-.kt-sec-head p{margin:0;font-size:.8125rem;color:var(--muted)}
-.kt-note{margin:6px 0 0;font-size:.75rem;color:var(--muted);max-width:760px}
-.kt-frame{--axis:48px;margin-top:12px}
-.kt-frame.is-wide{max-width:620px}
-.kt-lanehead,.kt-chart{display:grid;grid-template-columns:var(--axis) repeat(var(--lanes),minmax(0,1fr));column-gap:6px}
-.kt-lanehead{position:sticky;top:var(--kt-bar,56px);z-index:4;padding:8px 0 6px;background:#f5f7f3f2;border-bottom:1px solid var(--line)}
+/* 연표 한 장: 눈금 하나, 줄 폭은 모두 같음(넓은 화면 5줄, 좁은 화면 4줄) */
+.kt-frame{--axis:48px;--gap:6px;margin-top:14px}
+.kt-lanehead{position:sticky;top:var(--kt-bar,56px);z-index:4;display:grid;grid-template-columns:var(--axis) repeat(4,minmax(0,1fr));column-gap:var(--gap);min-height:34px;padding:8px 0 6px;background:#f5f7f3;border-bottom:1px solid var(--line)}
 .kt-lane-name{display:flex;align-items:center;gap:5px;min-width:0;font-size:.8125rem;font-weight:750;color:var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kt-narrow-only{display:none}
 .kt-lane-name::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--c)}
-.kt-chart{position:relative;grid-auto-rows:100%;margin-top:10px;margin-bottom:10px}
+.kt-chart{position:relative;display:grid;grid-template-columns:var(--axis) repeat(4,minmax(0,1fr));column-gap:var(--gap);grid-auto-rows:100%;margin:26px 0 10px}
 .kt-grid{position:absolute;inset:0 0 0 var(--axis);pointer-events:none}
 .kt-grid i{position:absolute;left:0;right:0;height:0;border-top:1px solid #e9eee8}
 .kt-grid i.is-major{border-top-color:#dfe6de}
@@ -42,115 +42,423 @@
 .kt-axis{position:relative}
 .kt-tick{position:absolute;right:4px;transform:translateY(-50%);font-size:.6875rem;line-height:1;color:#7d8c86;font-variant-numeric:tabular-nums;white-space:nowrap}
 .kt-tick.is-century{font-weight:750;color:#43554e}
+.kt-tick.is-half{font-size:.625rem;color:#a3aea9}
+/* 기원전 1000년 이전 눈금: BC와 숫자를 두 줄로(축이 좁아서) */
+.kt-tick.is-stack .kt-bc{display:block;font-size:.625rem;line-height:1.1;text-align:right}
+.kt-grid i.is-half{border-top-style:dashed;border-top-color:#edf1ec}
 .kt-lane{position:relative;min-width:0}
+.kt-axis{grid-row:1;grid-column:1}
 
-/* 재위 띠: 연한 바탕 + 즉위한 해의 진한 선 */
-.kt-band{position:absolute;left:0;right:0;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;margin:0;padding:3px 6px 0 9px;border:0;border-top:2px solid var(--c);border-radius:0 0 5px 5px;background:var(--t);color:#1d2b28;font:inherit;text-align:left;cursor:pointer;overflow:hidden}
+/* 시기 구분(고려·조선): 1번째 줄 이름표 + 그 시기 왕 띠를 같은 색 테두리로 묶는다. 왕 띠 뒤에 깔린다 */
+.kt-periods{grid-row:1;grid-column:2 / span 2;position:relative;min-width:0;pointer-events:none}
+.kt-period{position:absolute;left:0;right:-3px;box-sizing:border-box;border:1.5px solid color-mix(in srgb,var(--pc) 70%,transparent);border-top:3px solid var(--pc);border-radius:2px 2px 10px 10px;background:color-mix(in srgb,var(--pt) 55%,transparent)}
+.kt-period-label{position:absolute;left:0;top:0;box-sizing:border-box;width:calc((100% - var(--gap)) / 2 - 4px);padding:5px 8px 0;overflow:hidden}
+.kt-period-label b{display:block;font-size:.875rem;font-weight:850;letter-spacing:-.02em;line-height:1.25;color:var(--pc);word-break:keep-all}
+.kt-period-label span{display:block;font-size:.6875rem;font-weight:700;line-height:1.35;color:#55645f;font-variant-numeric:tabular-nums}
+.kt-period-label em{display:block;margin-top:3px;font-style:normal;font-size:.6875rem;line-height:1.4;color:#3d4a45;word-break:keep-all}
+/* 짧은 시기(배율을 줄였을 때): 이름과 연도를 한 줄로, 칸 밖으로 넘치지 않게 */
+.kt-period.is-tiny .kt-period-label{display:flex;align-items:baseline;gap:6px;max-height:100%;padding-top:1px;white-space:nowrap}
+.kt-period.is-tiny .kt-period-label b{font-size:.75rem;white-space:nowrap}
+/* 큰 시기 안의 세부 시기(최씨 정권, 강화도 항쟁기): 이름표 칸 안에 점선 */
+.kt-period-sub{position:absolute;left:8px;box-sizing:border-box;width:calc((100% - var(--gap)) / 2 - 14px);padding:3px 0 0 4px;border-top:1px dashed var(--pc)}
+.kt-period-sub b{display:block;font-size:.75rem;font-weight:800;line-height:1.25;color:var(--pc);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kt-period-sub span{display:block;font-size:.6875rem;font-weight:650;color:#55645f;font-variant-numeric:tabular-nums}
+/* 좁은 화면의 시기 구분(시기 시작 가로선 + 이름표)은 600px 이하에서만 보인다(아래 @media) */
+.kt-plines{display:none}
+.kt-lane-plain{--c:#55598f}
+.kt-key-period{box-sizing:border-box;background:#f4e5d0;border:1.5px solid #9a6326;border-top-width:3px;border-radius:2px 2px 5px 5px}
+
+/* 주요 사건(개항기~): 왕 띠 오른쪽 끝에서 점선 → 점 → 이름표. 2·3번째 줄에 걸쳐 왕 띠 위에 놓인다 */
+.kt-events{position:relative;min-width:0;pointer-events:none;z-index:2}
+.kt-events>*{position:absolute}
+.kt-ev-link{height:0;border-top:1px dashed color-mix(in srgb,var(--ec) 70%,transparent)}
+.kt-ev-dot{width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:var(--ec);box-shadow:0 0 0 2px #f5f7f3}
+.kt-ev-dot.is-span{width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:2px}
+/* 점과 이름표 첫 줄을 잇는 짧은 가로선. 눈금이 사건 해마다 이름표 높이를 보장하므로 이름표는 늘 점 높이에 있다 */
+.kt-ev-tie{height:0;border-top:1px solid color-mix(in srgb,var(--ec) 60%,transparent)}
+.kt-ev-lab{right:0;font-size:.75rem;line-height:16px;color:#1d2b28;white-space:nowrap}
+.kt-ev-lab>span{display:block;overflow:hidden;text-overflow:ellipsis}
+.kt-ev-lab b{margin-right:5px;font-weight:800;color:var(--ec);font-variant-numeric:tabular-nums}
+/* 왼쪽 사건(넓은 화면의 대외 사건): 시기 상자 안, 왕 띠 쪽으로 오른쪽 맞춤. "이름 연도" 순서라 이름이 길면 이름 끝을 줄인다 */
+.kt-split-note{margin-left:2px;color:var(--muted)}
+@media(max-width:999px){.kt-split-note{display:none!important}}
+@media(max-width:1139px){.kt-split-legend{display:none!important}}
+.kt-legend>.kt-split-legend{white-space:normal}
+/* 줄 폭을 넘는 이름표만 줄임 이름·두 자리 끝 해(JS가 use-short를 붙임) */
+.kt-events .use-short .kt-wide-only,.kt-acts .use-short .kt-wide-only{display:none}
+.kt-events .use-short .kt-narrow-only,.kt-acts .use-short .kt-narrow-only{display:inline}
+
+/* 왕이 한 일(넓은 화면): 나라 띠를 좁히고 띠 바로 옆에 그 해 높이로 적는다. 사건(●)과 구별되게 네모 표시 */
+.kt-lane{--bw:37%}
+.kt-band.is-narrow{right:auto;width:var(--bw)}
+/* 좁힌 띠: 한 줄 띠는 이름 자리를 넓히려고 햇수를 글자로 보이지 않게 한다(띠의 낭독 문장에는 있음). 이름이 넘치면 대수도 뺀다(JS가 is-tight-name) */
+.kt-band.is-narrow.size-m .kt-dur,.kt-band.is-tight-name .kt-name small,.kt-band.is-tight-name .kt-sfx{display:none}
+.kt-band.is-narrow.can-wrap .kt-name{white-space:normal;word-break:keep-all;line-height:1.2}
+.kt-band.is-narrow .kt-name{font-size:.75rem}
+/* 두 줄 이상 들어가는 띠는 긴 이름(아달라 이사금 등)을 낱말 단위로 줄바꿈한다(햇수 줄이 띠 밖으로 밀리면 숨김: 아래 is-tight) */
+.kt-band.is-narrow.size-l .kt-name{white-space:normal;overflow-wrap:anywhere;word-break:keep-all}
+.kt-band.is-narrow .kt-stage:not(.is-first){right:4px}
+.kt-acts{position:absolute;inset:0;pointer-events:none;z-index:1}
+.kt-acts>*{position:absolute}
+.kt-act-mark{left:calc(var(--bw) + 5px);width:6px;height:6px;margin-top:-3px;background:var(--am);box-shadow:0 0 0 2px #f5f7f3}
+.kt-act-mark.is-undated{background:#a7b1ac}
+/* 띠 옆 업적(넓은 화면): 업적 박스를 세로로 쌓는다(박스 모양은 아래 .kt-abox). 첫 박스 첫 줄 가운데가 그 해 높이 */
+.kt-act-lab{left:calc(var(--bw) + 14px);right:4px;display:flex;flex-direction:column;gap:3px;font-size:.71875rem;letter-spacing:-.01em;color:#1d2b28;--c:var(--am)}
+@media(max-width:1299px){.kt-act-lab{font-size:.6875rem;letter-spacing:-.02em}}
+
+/* 업적 박스: 첫 줄 = 연도 + 제목(굵게), 둘째 줄 = 짧은 설명(이론 정리 문장을 줄인 것). 옆으로 나란히 놓지 않고 세로로 쌓는다 */
+.kt-abox{display:block;box-sizing:border-box;width:100%;padding:2px 7px 3px;border:1px solid color-mix(in srgb,var(--c) 30%,transparent);border-left:3px solid color-mix(in srgb,var(--c) 70%,transparent);border-radius:5px;background:#fffffff2;line-height:16px;word-break:keep-all;overflow-wrap:anywhere}
+.kt-abox-t{display:block;font-weight:750;color:#1d2b28}
+.kt-abox-t b{margin-right:5px;font-size:.92em;font-weight:800;color:var(--ac,var(--ink));font-variant-numeric:tabular-nums;letter-spacing:0}
+.kt-abox.is-undated .kt-abox-t b{font-weight:600;color:#98a39e}
+.kt-abox.is-ev{--c:var(--ec);--ac:var(--ec)}
+.kt-abox.is-hot{border-left-color:var(--c);background:#fff}
+.kt-abox.is-hot .kt-abox-t{font-weight:850;color:var(--ink,#1d2b28)}
+.kt-abox-d{display:block;margin-top:1px;font-size:.9em;font-weight:500;line-height:1.4;color:#5a6a64}
+/* 자세히 보기: 박스 안에 상세 줄(표와 같은 형식)을 보인다 */
+.kt-abox-more{display:none}
+/* 폭 1000px 이상: 띠 안(또는 띠 옆) 박스에 그대로 펼친다 */
+@media(min-width:1000px){
+  .kt-detail .kt-abox-more{display:block;margin-top:5px;padding:5px 8px 6px;border-left:3px solid #d8c27a;border-radius:0 5px 5px 0;background:#fbf7e8}
+}
+/* 폭 1000px 미만: 줄 폭이 80~220px라, 박스 상세가 있는 띠를 옆 빈 줄까지 넓혀(is-xwide·is-xleft) 그 띠 안에서만 상세를 보인다 */
+@media(max-width:999px){
+  .kt-band.is-xwide{left:calc(-100% - var(--gap));right:calc(-200% - 2 * var(--gap))}
+  /* is-xshow: 옆 줄을 쓸 수 없는 띠(일제 강점기, 3번째 줄을 임시 정부가 씀)는 넓히지 않고 자기 줄 안에서 상세를 보인다 */
+  .kt-detail .kt-band.is-xwide .kt-abox-more,.kt-detail .kt-band.is-xshow .kt-abox-more{display:block;margin-top:5px;padding:5px 8px 6px;border-left:3px solid #d8c27a;border-radius:0 5px 5px 0;background:#fbf7e8}
+  .kt-band.is-xwide .kt-abox-more .kt-tbl-d,.kt-band.is-xshow .kt-abox-more .kt-tbl-d{font-size:.8125rem}
+}
+.kt-abox-more .kt-tbl-d{font-size:.8125rem;line-height:1.5;font-weight:400;color:#2f3d38}
+.kt-abox-more .kt-tbl-d+.kt-tbl-d{margin-top:6px}
+.kt-abox-more .kt-tbl-d em{font-size:.6875rem}
+.kt-tbl-d.is-link em{color:#6b55a3}
+/* 넓은 화면에서 자세히를 켜면 박스 상세가 있는 나라(고려)의 띠를 옆 빈 줄까지 넓히고, 박스를 분야별 3열로 놓는다 */
+@media(min-width:1000px){
+  .kt-keys.is-cols{display:grid;grid-template-columns:34px repeat(3,minmax(0,1fr));gap:3px 10px;align-items:start}
+  .kt-cell{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .kt-cell>.kt-abox{background:#ffffffe6}
+  .kt-cell>.kt-abox.is-hot{background:#fff}
+  .kt-col-h{padding:2px 2px 3px;border-bottom:2px solid color-mix(in srgb,var(--cc) 55%,#fff);font-size:.75rem;font-weight:850;line-height:1.3;color:var(--cc)}
+  .kt-col-h:empty{border-bottom-color:transparent}
+  .kt-yr{display:block;margin-top:3px;padding:2px 0;border-radius:999px;background:color-mix(in srgb,var(--c) 22%,#fff);font-size:.75rem;font-weight:850;line-height:1.4;color:var(--ink);text-align:center;font-variant-numeric:tabular-nums}
+  .kt-ugroup{grid-column:1 / -1;margin-top:2px;padding:1px 0 0;border-top:1px dashed color-mix(in srgb,var(--c) 40%,#fff);font-size:.6875rem;font-weight:750;color:#6b7a74}
+  .kt-band.is-cright{right:calc(-200% - 2 * var(--gap))}
+  .kt-period.is-x{right:calc(-100% - var(--gap));background:color-mix(in srgb,var(--pt) 26%,transparent)}
+  .kt-band.is-cols{background:color-mix(in srgb,var(--t) 42%,#fff)}
+}
+.kt-key-act{display:inline-block;width:7px;height:7px;background:#1f4e79}
+.kt-legend>.kt-legend-ev{flex-wrap:wrap;gap:4px 10px;white-space:normal}
+.kt-legend-ev>span{display:inline-flex;align-items:center;gap:4px;color:var(--muted)}
+.kt-key-ev{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ec,#7d8c86)}
+.kt-key-ev.is-span{border-radius:2px;background:#7d8c86}
+
+/* 재위 띠: 연한 바탕 + 즉위한 해의 진한 선. 모든 띠에 이름이 들어간다 */
+.kt-band{position:absolute;left:0;right:0;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;margin:0;padding:3px 6px 0 9px;border:0;border-top:2px solid var(--c);border-radius:0 0 5px 5px;background:var(--t);color:#1d2b28;font:inherit;text-align:left;overflow:hidden}
 .kt-band::before{content:"";position:absolute;left:0;top:-2px;width:7px;height:7px;border-radius:0 0 7px 0;background:var(--c)}
-.kt-band:hover{filter:brightness(.97)}
-.kt-band:focus-visible,.kt-mark:focus-visible{outline:3px solid #1d2b28;outline-offset:1px;z-index:3}
-.kt-label{display:block;pointer-events:none}
-.kt-name{display:block;font-size:.8125rem;font-weight:750;line-height:1.25;word-break:keep-all;overflow-wrap:anywhere}
+.kt-label{display:block;pointer-events:none;min-width:0}
+.kt-name{display:block;font-size:.8125rem;font-weight:750;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kt-name small{font-size:.625rem;font-weight:650;color:var(--ink);margin-right:1px}
 .kt-name em{font-style:normal;font-size:.625rem;font-weight:700;margin-left:4px;padding:0 4px;border-radius:4px;background:#fff;color:var(--ink)}
-.kt-alt{display:none}
-.kt-years{display:block;margin-top:1px;font-size:.6875rem;line-height:1.25;color:#55645f;font-variant-numeric:tabular-nums}
-.kt-years>span{white-space:nowrap}
-.kt-years abbr{margin-left:3px;text-decoration:none;font-weight:800;color:var(--ink)}
-.kt-band.size-m .kt-years{display:none}
-.kt-band.size-s{padding-top:0}
-.kt-band.size-s .kt-name{font-size:.6875rem;line-height:1.1}
-.kt-band.size-s .kt-name small,.kt-band.size-s .kt-years{display:none}
-.kt-band.size-xs .kt-label{display:none}
-.kt-band.after-mark{padding-top:15px}
-.kt-band.after-mark.size-m .kt-label,.kt-band.after-mark.size-s .kt-label{display:none}
-.kt-band.is-cut-top{border-top-style:dotted}
-.kt-band.is-cut-top::before{display:none}
-.kt-band.is-cut-bottom{border-radius:0;-webkit-mask-image:linear-gradient(#000 calc(100% - 14px),#0004);mask-image:linear-gradient(#000 calc(100% - 14px),#0004)}
+.kt-band.size-xl .kt-name{white-space:normal;overflow:visible;overflow-wrap:anywhere;word-break:keep-all}
+.kt-repeat{position:absolute;left:9px;font-size:.8125rem;font-weight:750;color:var(--ink);opacity:.55;pointer-events:none}
+.kt-band.is-bare .kt-years{color:#52702b}
+.kt-alt{margin-left:6px;font-size:.75rem;font-weight:500;color:#55645f}
+.kt-dur{display:none;font-size:.6875rem;line-height:1.25;color:#55645f;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kt-years{display:none;margin-top:1px;font-size:.6875rem;line-height:1.25;color:#55645f;font-variant-numeric:tabular-nums}
+.kt-years{white-space:nowrap}
+.kt-dur abbr,.kt-years abbr{margin-left:3px;text-decoration:none;font-weight:800;color:var(--ink)}
+/* 높이 24~40px: 한 줄(이름 + 재위 햇수) */
+.kt-band.size-m .kt-label{display:flex;align-items:baseline;gap:6px}
+.kt-band.size-m .kt-name{flex:0 0 auto;max-width:100%}
+.kt-band.size-m .kt-dur{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.kt-band.size-m .kt-alt{display:none}
+.kt-band.size-m .kt-dur{display:block;flex:none}
+/* 높이 40px 이상: 두 줄(이름 / 연도 · 햇수) */
+.kt-band.size-l .kt-years{display:block}
 .kt-band.is-uncertain{border-top-style:dashed;outline:1px dashed var(--c);outline-offset:-1px}
 
-/* 1년이 안 되는 재위 */
-.kt-mark{position:absolute;left:0;right:0;z-index:2;height:14px;margin:0;padding:0 6px 0 9px;border:0;border-top:2px solid var(--c);background:none;font:inherit;text-align:left;cursor:pointer;overflow:hidden}
-.kt-mark span{display:block;font-size:.625rem;font-weight:700;line-height:12px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kt-mark.is-uncertain{border-top-style:dashed}
+/* 왕 띠 안 업적 칸: 흰 바탕 작은 칸. 첫 칸(기출에 가장 많이 나온 것)만 조금 진하게 */
+/* 왕 띠 안 업적: 업적 박스(.kt-abox)를 세로로 하나씩 쌓는다(옆으로 두 줄 이상 나란히 두지 않음) */
+.kt-keys{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:3px;margin:5px 0 0;font-size:.6875rem;pointer-events:none}
+.kt-keys>.kt-abox{background:#ffffffe6}
+/* 재위 단계(고종 등 재위가 긴 왕): 첫 단계는 이름표 아래, 다음 단계부터는 시작한 해 높이에 점선 + 이름표 + 칸 */
+.kt-stage{display:block;margin-top:6px;pointer-events:none}
+.kt-stage:not(.is-first){position:absolute;left:9px;right:6px;margin:0;padding-top:5px;border-top:1px dashed color-mix(in srgb,var(--ink) 55%,transparent)}
+.kt-stage-title{display:block;font-size:.6875rem;font-weight:800;line-height:1.3;color:var(--ink);word-break:keep-all}
+.kt-stage-title b{margin-right:2px;font-variant-numeric:tabular-nums}
+.kt-stage .kt-keys{margin-top:3px}
+.kt-key-chip{display:inline-block;padding:0 6px;border:1px solid #9fb0c4;border-radius:999px;background:#fff;font-style:normal;font-size:.6875rem;font-weight:800;line-height:15px;color:#1f4e79}
+
+/* 왕별 연도가 없는 나라(대가야): 줄 오른쪽 가는 세로 띠 */
+.kt-lane{--strip-w:24px}
+.kt-strip{display:none;position:absolute;right:0;z-index:1;width:var(--strip-w);box-sizing:border-box;margin:0;padding:6px 0 0;border:0;border-top:2px dashed var(--c);border-left:1px dashed var(--c);border-radius:0 0 5px 5px;background:var(--t);color:var(--ink);font:inherit;overflow:hidden}
+.kt-strip span{position:absolute;left:50%;transform:translateX(-50%);font-size:.75rem;font-weight:750;line-height:1.1;letter-spacing:.05em;writing-mode:vertical-rl;text-orientation:upright;white-space:nowrap;pointer-events:none}
+
+/* 한 줄을 반씩 나눠 쓰는 나라(넓은 화면의 금관가야 · 대가야) */
+@media(min-width:1000px){
+  .kt-lane .kt-half-l{right:calc(50% + 2px)}
+  .kt-lane .kt-half-r{left:calc(50% + 2px)}
+}
+/* 1000px보다 좁으면 반 폭에 이름이 다 안 들어가므로, 폰처럼 대가야는 금관가야 줄 오른쪽 가는 띠로만 보여 준다 */
+@media(max-width:999px){
+  .kt-lane .kt-half-r{display:none}
+  .kt-strip{display:block}
+  .kt-band.has-strip,.kt-edge.has-strip{right:calc(var(--strip-w) + 3px)}
+}
+/* 900px 이하에서는 사건 이름표도 줄임 이름·두 자리 끝 해를 쓴다(사건 줄 폭이 좁아짐) */
+@media(max-width:900px){
+  .kt-ev-lab .kt-wide-only{display:none}
+  .kt-ev-lab .kt-narrow-only{display:inline}
+}
+/* 띠에 글자가 다 안 들어갈 때(JS가 is-tight를 붙임). 두 줄 띠: 햇수 줄이 띠 밖으로 밀리면 햇수 줄을 뺀다.
+   한 줄 띠: "대수 이름 햇수"가 넘치면 대수를 뺀다 */
+.kt-band.size-l.is-tight .kt-years{display:none}
+.kt-band.size-m.is-tight .kt-name small{display:none}
+
+/* 왕과 재위 연도가 전해지지 않는 구간(미상): 빗금 칸 */
+.kt-gap{position:absolute;left:0;right:0;box-sizing:border-box;padding:5px 8px 0 9px;border:1px dashed #c4cdc7;border-top-style:dotted;border-radius:4px;background:repeating-linear-gradient(135deg,#f8f9f7 0 6px,#eef1ed 6px 12px);color:#7f8c86;overflow:hidden;pointer-events:none}
+.kt-gap-name{display:block;font-size:.8125rem;font-weight:700;line-height:1.25}
+.kt-gap-note{display:block;margin-top:2px;font-size:.6875rem;line-height:1.35;opacity:.9}
+.kt-gap .kt-repeat{color:#7f8c86;opacity:.8}
 
 /* 나라의 시작과 끝 */
-.kt-edge{position:absolute;left:0;right:0;font-size:.625rem;font-weight:700;color:var(--c);text-align:center;pointer-events:none;white-space:nowrap}
+.kt-edge{position:absolute;left:0;right:0;padding:0 2px;font-size:.625rem;font-weight:700;line-height:1.25;color:var(--c);text-align:center;pointer-events:none}
 .kt-edge.is-start{transform:translateY(-100%);padding-bottom:2px}
 .kt-edge:not(.is-start){padding-top:3px;border-top:1px dashed var(--c)}
 
-/* 한 나라만 있는 구간: 띠가 넓어서 정보를 한 줄에 */
-.is-wide .kt-label{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px}
-.is-wide .kt-name{font-size:.875rem}
-.is-wide .kt-alt{display:inline;font-size:.75rem;color:#55645f}
-.is-wide .kt-years{font-size:.75rem}
-.is-wide .kt-band.size-m{padding-top:1px}
-.is-wide .kt-band.size-m .kt-years{display:block}
-/* 넓은 칸에서 재위가 짧은 왕: 띠 오른쪽 끝에 이름표를 띄운다 */
-.is-wide .kt-band.size-s,.is-wide .kt-band.size-xs{overflow:visible}
-.is-wide .kt-band.size-s .kt-label,.is-wide .kt-band.size-xs .kt-label{display:flex;z-index:3;position:absolute;right:8px;top:50%;transform:translateY(calc(-50% + var(--dy,0px)));padding:1px 8px;border:1px solid var(--c);border-radius:999px;background:#fff;white-space:nowrap}
-.is-wide .kt-band.size-s .kt-name,.is-wide .kt-band.size-xs .kt-name{font-size:.75rem;line-height:1.3}
-.is-wide .kt-band.size-s .kt-name small,.is-wide .kt-band.size-xs .kt-name small{display:inline}
-.is-wide .kt-band.size-s .kt-years,.is-wide .kt-band.size-xs .kt-years{display:block;font-size:.6875rem;line-height:1.3;margin:0}
-.is-wide .kt-band.size-s .kt-alt,.is-wide .kt-band.size-xs .kt-alt{display:none}
-.is-wide .kt-band.is-picked .kt-label{background:var(--c)}
+/* 기출 해설에 거의 나오지 않은 왕: 바탕과 글씨를 옅게 */
+.kt-band.is-minor{background:#f5f6f4;border-top-color:color-mix(in srgb,var(--c) 28%,#fff);color:#a2aca7}
+.kt-band.is-minor::before{background:color-mix(in srgb,var(--c) 28%,#fff)}
+.kt-band.is-minor .kt-name{font-weight:400}
+.kt-band.is-minor .kt-name small,.kt-band.is-minor .kt-dur,.kt-band.is-minor .kt-years{color:#b3bcb8}
 
-/* 선택한 왕과 같은 시기 왕 */
-.has-pick .kt-band.is-dim,.has-pick .kt-mark.is-dim{opacity:.32}
-.kt-band.is-near{box-shadow:inset 0 0 0 2px var(--c)}
-.kt-band.is-picked{background:var(--c);color:#fff;opacity:1}
-.kt-band.is-picked .kt-name small,.kt-band.is-picked .kt-years,.kt-band.is-picked .kt-years abbr,.kt-band.is-picked .kt-alt{color:#ffffffe0}
-.kt-band.is-picked::before{background:#fff}
-.kt-mark.is-picked{background:var(--c)}
-.kt-mark.is-picked span{color:#fff}
-
-/* 정보 창: 모바일은 아래에서 올라오고, 넓은 화면은 오른쪽 아래에 뜸 */
-.kt-sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;max-height:min(58vh,460px);overflow:auto;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -6px 28px #183c3024;border-top:1px solid var(--line)}
-.kt-sheet-card{position:relative;padding:18px 20px 22px;border-top:4px solid var(--c);border-radius:18px 18px 0 0}
-.kt-close{position:absolute;top:8px;right:10px;width:36px;height:36px;border:0;border-radius:50%;background:#f1f4f1;font-size:1.4rem;line-height:1;color:var(--muted);cursor:pointer}
-.kt-sheet-kingdom{margin:0;font-size:.75rem;font-weight:750;color:var(--c)}
-.kt-sheet-card h3{margin:2px 0 2px;font-size:1.375rem;letter-spacing:-.03em}
-.kt-sheet-card h3 small{font-size:.875rem;font-weight:600;color:var(--muted)}
-.kt-sheet-years{margin:0 0 8px;font-size:.9375rem;font-weight:650;font-variant-numeric:tabular-nums}
-.kt-sheet-years span{margin-left:6px;padding:2px 8px;border-radius:999px;background:#f1f4f1;font-size:.75rem;color:var(--ink)}
-.kt-sheet-note{margin:0 0 6px;font-size:.8125rem;color:var(--muted)}
-.kt-sheet-card h4{margin:12px 0 6px;font-size:.8125rem;color:var(--ink)}
-.kt-near{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.kt-near li{display:grid;grid-template-columns:76px 1fr;gap:8px;align-items:start}
-.kt-near b{font-size:.75rem;color:var(--c);padding-top:5px}
-.kt-near span{display:flex;flex-wrap:wrap;gap:5px}
-.kt-near button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px;font:inherit;font-size:.8125rem;cursor:pointer}
-.kt-near button:hover,.kt-near button:focus-visible{border-color:var(--green);color:var(--green)}
-.kt-none{margin:0;font-size:.8125rem;color:var(--muted)}
-.has-pick .kt-wrap{padding-bottom:min(60vh,480px)}
-
-@media(min-width:900px){
-  .kt-sheet{left:auto;right:24px;bottom:24px;width:340px;max-height:calc(100vh - 140px);border-radius:16px;box-shadow:0 10px 36px #183c3030;border:1px solid var(--line)}
-  .kt-sheet-card{border-radius:16px}
-  .has-pick .kt-wrap{padding-bottom:60px}
-  .kt-frame:not(.is-wide){max-width:calc(100% - 360px)}
-}
 @media(max-width:600px){
+  .kt-lanehead,.kt-chart{grid-template-columns:var(--axis) repeat(4,minmax(0,1fr))}
+  .kt-pc-only,.kt-wide-only{display:none}
+  .kt-narrow-only{display:inline}
+  .kt-strip{display:block}
+  .kt-band.has-strip{right:calc(var(--strip-w) + 3px)}
+  .kt-edge.has-strip{right:calc(var(--strip-w) + 3px)}
   .kt-wrap{padding:24px 12px 48px}
   .kt-toolbar{margin:0 -12px;padding:8px 12px;gap:8px}
-  .kt-jump{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:100%}
+  .kt-toolbar{flex-wrap:nowrap}
+  .kt-jump{flex:1 1 0;min-width:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:100%}
+  .kt-tools{flex:none}
+  .kt-zoom-hint{display:none}
   .kt-jump::-webkit-scrollbar{display:none}
   .kt-jump a{padding:6px 10px}
-  .kt-zoom button{padding:5px 10px}
-  .kt-frame{--axis:40px}
-  .kt-lanehead,.kt-chart{column-gap:4px}
-  .kt-lane-name{font-size:.75rem;gap:4px}
-  .kt-tick{font-size:.625rem;right:3px}
+  /* 연도 칸을 좁히고(40 → 26px) 연표만 좌우로 8px씩 넓힌다(설명 글 여백은 그대로) */
+  .kt-frame{--axis:26px;--gap:4px;margin-left:-8px;margin-right:-8px}
+  /* 글자 크기: 폰에서 읽기 쉽게 연표 글자를 1px 안팎 키운다(이름 12→13, 햇수·칸·사건 10→11, 눈금 9→10px) */
+  .kt-lane-name{font-size:.8125rem;gap:4px}
+  .kt-tick{font-size:.625rem;right:2px;letter-spacing:-.04em;text-align:right}
+  /* 기원전: "BC"를 숫자 위에 작게(두 줄) */
+  .kt-bc{display:block;font-size:.5625rem;font-weight:600;line-height:1.05;letter-spacing:0}
   .kt-band{padding:2px 4px 0 7px}
-  .kt-frame:not(.is-wide) .kt-name{font-size:.75rem}
-  .kt-frame:not(.is-wide) .kt-name small{display:none}
-  .kt-frame:not(.is-wide) .kt-years{font-size:.625rem}
-  .kt-near li{grid-template-columns:64px 1fr}
+  .kt-name{font-size:.8125rem}
+  .kt-name small,.kt-alt{display:none}
+  .kt-years{font-size:.6875rem}
+  .kt-edge{font-size:.6875rem}
+  .kt-band.size-m .kt-dur{display:none}
+  .kt-lane{--strip-w:18px}
+  .kt-strip span{font-size:.75rem}
+  /* 시기 구분: 1번째 칸 이름표 상자 대신, 2번째 줄 띠를 1번째 칸까지 넓히고(고려 2대 혜종 ~ 현대, JS가 kt-wide)
+     시기가 시작하는 해에 색 가로선 + 이름표(띠 칸 오른쪽 위). 띠 바탕의 시기 색은 그대로 둔다 */
+  .kt-periods{display:none}
+  .kt-lane>.kt-wide{left:calc(-100% - var(--gap))}
+  .kt-head-period{display:none}
+  .kt-head-wide{grid-column:2 / span 2}
+  .kt-plines{display:block;grid-row:1;grid-column:2 / span 4;position:relative;min-width:0;pointer-events:none;z-index:1}
+  .kt-pl{position:absolute;left:0;right:0;height:0;border-top:2px solid var(--pc);font-style:normal}
+  .kt-pl.is-end{border-top:1px dashed color-mix(in srgb,var(--pc) 70%,transparent)}
+  /* 층 폭 W = 4칸 + 간격 3개. 띠 칸(1·2번째 칸) 오른쪽 끝에서 층 오른쪽 끝까지 = (W - 3간격) / 2 + 2간격 */
+  .kt-pl.is-sub{right:calc((100% - 3 * var(--gap)) / 2 + 2 * var(--gap));border-top:1px dashed var(--pc)}
+  /* 시기 이름표: 가로선 바로 밑, 띠 칸 폭 전체의 띠(큰 시기 26px · 세부 시기 20px 높이 = JS PL_TAG_H).
+     그 해에 시작하는 띠·재위 단계는 이름표 높이만큼 글자를 내린다(JS가 kt-pstart / kt-pstart-sub를 붙이고 눈금 높이도 더 줌) */
+  .kt-pl-tag{position:absolute;top:0;left:0;right:calc((100% - 3 * var(--gap)) / 2 + 2 * var(--gap));box-sizing:border-box;height:26px;display:flex;align-items:center;gap:6px;padding:0 8px;border-radius:0 0 6px 6px;background:var(--pc);color:#fff;font-size:.8125rem;font-weight:850;line-height:1;white-space:nowrap;letter-spacing:-.02em;overflow:hidden}
+  .kt-pl-tag small{flex:none;margin-left:auto;font-size:.6875rem;font-weight:700;opacity:.9;font-variant-numeric:tabular-nums}
+  .kt-pl.is-sub .kt-pl-tag{right:0;height:20px;padding:0 7px;border:1px solid var(--pc);border-top:0;background:#fffffff2;color:var(--pc);font-size:.6875rem;font-weight:800}
+  .kt-pl.is-sub .kt-pl-tag small{font-size:.625rem}
+  /* 띠 칸 폭을 넘는 이름표(JS가 붙임): 연도를 빼고, 그래도 넘치면 글자를 한 단계 작게 */
+  .kt-pl-tag.no-yrs small{display:none}
+  .kt-pl-tag.is-small{font-size:.75rem;letter-spacing:-.04em}
+  .kt-band.kt-pstart{padding-top:28px}
+  .kt-band.kt-pstart-sub{padding-top:22px}
+  .kt-stage.kt-pstart{padding-top:31px}
+  .kt-stage.kt-pstart-sub{padding-top:25px}
+  /* 시기 선이 같은 해 사건 이름표를 가로지르지 않게 이름표 글자 뒤에 바탕색 */
+  .kt-ev-lab>span{width:fit-content;max-width:100%;background:#f5f7f3}
+  /* 사건: 점·점선·짧은 가로선을 빼고 이름표를 사건 칸 왼쪽 끝에 붙인다(사건 종류는 연도 글자 색으로 구분).
+     사건 층은 2~4번째 칸에 걸치고, 사건 칸(3번째 칸) 왼쪽 끝 = (층 폭 + 간격) / 3 */
+  .kt-ev-link,.kt-ev-dot,.kt-ev-tie{display:none}
+  .kt-events .kt-ev-lab{left:calc((100% + var(--gap)) / 3 + 3px)!important}
+  .kt-keys{gap:2px;margin-top:3px}
+  .kt-stage:not(.is-first){left:7px;right:4px}
+  .kt-stage-title{font-size:.6875rem}
+  /* 좁은 줄의 업적 박스: 글씨를 자르지 않고 줄을 넘긴다(띠 최소 높이가 그만큼 늘어남) */
+  .kt-keys{font-size:.6875rem;letter-spacing:-.02em}
+  .kt-keys>.kt-abox{padding:2px 5px 3px}
+  /* 칸은 모두 보인다: 띠 높이는 칸이 다 들어가는 만큼이 최소 높이(JS measureNeeds) */
+  .kt-ev-lab{font-size:.6875rem;letter-spacing:-.02em}
+  /* 범례 설명이 화면 폭을 넘지 않게 줄바꿈 */
+  .kt-legend>span{white-space:normal}
+  .kt-ev-lab b{margin-right:3px}
 }
-@media(prefers-reduced-motion:no-preference){.kt-band,.kt-mark{transition:opacity .15s,background-color .15s}}
+@media(hover:none){.kt-zoom-hint{display:none}}
+/* 모바일 화면 미리보기 버튼(PC): 배율 표시 옆 */
+.kt-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin-left:auto}
+.kt-mobile-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--green);border-radius:999px;background:#fff;color:var(--green);font-size:.75rem;font-weight:750;line-height:1.2;cursor:pointer;white-space:nowrap}
+.kt-mobile-btn:hover{background:#eef5f1}
+.kt-mobile-btn:focus-visible{outline:3px solid #df9a26;outline-offset:2px}
+/* 자세히 보기 버튼: 상단 막대 오른쪽 끝. 켜지면 초록으로 채운다 */
+.kt-detail-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border:1px solid var(--green);border-radius:999px;background:#fff;color:var(--green);font-size:.8125rem;font-weight:800;line-height:1.2;cursor:pointer;white-space:nowrap}
+.kt-detail-btn:hover{background:#eef5f1}
+.kt-detail-btn[aria-pressed="true"],.kt-detail-btn[aria-pressed="true"]:hover{background:var(--green);color:#fff}
+.kt-detail-btn:focus-visible{outline:3px solid #df9a26;outline-offset:2px}
+/* 폰 폭보다 좁은 화면(이미 모바일)과 미리보기 틀 안에서는 버튼을 숨긴다. 틀 안은 폰처럼 배율 안내도 숨긴다 */
+@media(max-width:760px){.kt-mobile-btn{display:none}}
+.kt-in-frame .kt-mobile-btn,.kt-in-frame .kt-zoom-hint{display:none}
+/* 미리보기 창: 어두운 바탕 위 가운데에 폰 모양 틀 */
+.kt-mobile-open{overflow:hidden}
+.kt-mobile-dlg{width:fit-content;max-width:none;max-height:none;margin:auto;padding:0;border:0;background:transparent;overflow:visible}
+.kt-mobile-dlg::backdrop{background:rgba(13,30,28,.62)}
+.kt-mobile-bar{display:flex;align-items:center;gap:10px;width:410px;margin:0 auto 10px;color:#fff;font-size:.8125rem}
+.kt-mobile-bar b{font-size:.9375rem}
+.kt-mobile-bar span{color:#c9d8d2;font-size:.75rem}
+.kt-mobile-close{margin-left:auto;padding:5px 12px;border:1px solid #ffffff66;border-radius:999px;background:#ffffff1a;color:#fff;font-size:.75rem;font-weight:700;cursor:pointer}
+.kt-mobile-close:hover{background:#ffffff33}
+.kt-mobile-close:focus-visible{outline:3px solid #df9a26;outline-offset:2px}
+.kt-phone{box-sizing:content-box;width:390px;height:min(844px,calc(100vh - 110px));padding:10px;border-radius:36px;background:#0d1715;box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.kt-phone-frame{display:block;width:100%;height:100%;border:0;border-radius:26px;background:#fff}
+@media(prefers-reduced-motion:no-preference){.kt-band{transition:opacity .15s,background-color .15s}}
 @media print{
-  .kt-toolbar,.kt-sheet{display:none}
+  .kt-toolbar{display:none}
   .kt-lanehead{position:static}
-  .kt-section{break-inside:auto}
-  .has-pick .kt-band.is-dim{opacity:1}
+}
+
+/* 시기 구분 줄(943년~): 이름표 칸은 --pw 폭만 쓰고, 왕·정부 띠와 줄 이름표는 그만큼 왼쪽으로 넓어진다(넓은 화면). 칸 하나의 폭 = 100% */
+.kt-frame{--pw:128px}
+@media(min-width:601px){
+  .kt-period-label{width:calc(var(--pw) - 4px)}
+  .kt-period-sub{width:calc(var(--pw) - 14px)}
+  .kt-pshift{left:calc(var(--pw) - 100%)}
+  .kt-head-wide{margin-left:calc(var(--pw) - 100%)}
+}
+
+/* 넓은 화면(PC)은 글자를 한 단계 키운다. 띠·박스 높이는 내용물에 맞춰 JS가 재므로 글자만 바꾸면 된다(업적 박스 줄 높이만 같이 키움) */
+@media(min-width:601px){
+  .kt-legend{font-size:.8125rem}
+  .kt-jump a{font-size:.875rem}
+  .kt-lane-name{font-size:.9375rem}
+  .kt-tick{font-size:.8125rem}
+  .kt-tick.is-half{font-size:.75rem}
+  .kt-period-label b{font-size:1.0625rem}
+  .kt-period-label span{font-size:.875rem}
+  .kt-period-label em{font-size:.9375rem;line-height:1.35}
+  .kt-period-label em i{display:block;margin:1px 0;font-style:normal;font-size:.9375rem;font-weight:800;line-height:1.1;color:var(--pc)}
+  .kt-period-label em i.kt-plsp{height:5px;margin:0;line-height:0}
+  .kt-period.is-tiny .kt-period-label b{font-size:.9375rem}
+  .kt-period-sub b{font-size:.9375rem}
+  .kt-period-sub span{font-size:.875rem}
+  .kt-name{font-size:.9375rem}
+  .kt-name small,.kt-name em{font-size:.75rem}
+  .kt-alt{font-size:.8125rem}
+  .kt-repeat{font-size:.9375rem}
+  .kt-dur,.kt-years{font-size:.8125rem}
+  .kt-keys{font-size:.8125rem}
+  .kt-abox{line-height:20px}
+  .kt-stage-title{font-size:.8125rem}
+  .kt-gap-name{font-size:.9375rem}
+  .kt-gap-note{font-size:.8125rem}
+  .kt-edge{font-size:.75rem}
+  .kt-strip span{font-size:.8125rem}
+}
+
+/* 기출에 거의 안 나온 왕은 글자 크기는 다른 왕과 같게 두고, 색만 연한 회색으로 둔다(위의 .is-minor 색 규칙) */
+
+/* 연표 안의 표(선사 시대 구분·초기 국가 비교): 줄 몇 개에 걸쳐 놓고, 좁은 화면에서는 행마다 카드로 쌓는다 */
+.kt-tblwrap{position:relative;min-width:0;pointer-events:none;z-index:2}
+.kt-tbl{position:absolute;left:0;right:0;box-sizing:border-box;padding:12px 14px 12px;border:1px solid #d5ddd3;border-radius:8px;background:#fff;pointer-events:auto;color:#1d2b28}
+.kt-tbl h3{margin:0;font-size:1.0625rem;font-weight:850;color:var(--green)}
+.kt-tbl-lead{margin:4px 0 10px;font-size:.875rem;line-height:1.5;color:#55645f}
+.kt-tbl table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:.875rem;line-height:1.55}
+.kt-tbl thead th{padding:9px 12px 8px;border-top:3px solid var(--cc,transparent);border-bottom:2px solid #b9c6b7;background:color-mix(in srgb,var(--cc,#7d8f84) 12%,#fff);text-align:left;font-size:.9375rem;font-weight:850;color:var(--cc,#3b4d46)}
+.kt-tbl thead th:first-child{border-top-color:transparent}
+.kt-ci{vertical-align:-3px;margin-right:6px}
+.kt-tbl td[style]{background:color-mix(in srgb,var(--cc) 4%,#fff)}
+.kt-tbl td.is-hot{background:color-mix(in srgb,var(--cc) 10%,#fff)}
+.kt-tbl tbody th,.kt-tbl td{padding:10px 12px;vertical-align:top;text-align:left}
+.kt-tbl tbody+tbody>tr:first-child>*{border-top:2px solid #c3cfc1}
+/* 행마다 한 줄 공식(핵심 칩) */
+.kt-tbl .kt-fm{padding:11px 12px 9px;background:color-mix(in srgb,var(--rc) 9%,#fff);border-bottom:1px solid color-mix(in srgb,var(--rc) 22%,#fff)}
+.kt-fm-lab{display:inline-block;margin-right:10px;padding:2px 8px;border-radius:5px;background:var(--rc);font-size:.75rem;font-weight:800;color:#fff;vertical-align:2px}
+.kt-chip{display:inline-block;margin:2px 0;padding:4px 12px;border:1.5px solid color-mix(in srgb,var(--rc) 55%,#fff);border-radius:999px;background:#fff;font-size:1rem;font-weight:850;line-height:1.4;color:#1f2d29}
+.kt-fm i{display:inline-block;margin:0 7px;font-style:normal;font-weight:800;color:color-mix(in srgb,var(--rc) 70%,#777)}
+.kt-tbl-fm+tr td{padding-top:12px}
+.kt-tbl tbody th{border-left:5px solid var(--rc);background:color-mix(in srgb,var(--rc) 14%,#fff)}
+.kt-tbl tbody th b{display:block;font-size:1rem;font-weight:850;color:var(--rc)}
+.kt-tbl tbody th small{display:block;margin-top:3px;font-size:.8125rem;font-weight:600;line-height:1.4;color:#5f6e68}
+.kt-tbl-i{display:block;padding:6px 0;border-top:1px dashed #dde4db;word-break:keep-all;overflow-wrap:anywhere}
+.kt-tbl-i:first-child{padding-top:0;border-top:0}
+.kt-tbl-i:last-child{padding-bottom:0}
+.kt-tbl-i b{font-weight:700;color:#24332f}
+.kt-tbl-i b::before{content:"";display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:var(--cc,#9aa8a0);vertical-align:1px}
+.kt-tbl-i.is-none b::before{background:#d3dbd6}
+.kt-tbl-i.is-key b{background:linear-gradient(transparent 52%,rgba(255,206,64,.55) 52%)}
+.kt-tbl-i small{display:block;margin-top:1px;font-size:.8125rem;font-weight:400;line-height:1.5;color:#667771}
+.kt-tbl-i small span{display:block}
+.kt-tbl-i.is-none b{font-weight:400;color:#a3aea9}
+.kt-tbl-note{margin:12px 0 0;padding:9px 12px;border-radius:6px;background:#f5f7f3;font-size:.875rem;line-height:1.6;color:#43554e}
+/* PC: 표 항목 글자를 키운다(자세히를 켜도 같은 크기). 연표 박스 글자도 아래에서 같은 크기로 맞춘다 */
+@media(min-width:601px){
+  .kt-tbl-i{padding-top:9px;padding-bottom:9px}
+  .kt-tbl-i:first-child{padding-top:0}
+  .kt-tbl-i:last-child{padding-bottom:0}
+  .kt-tbl-i b{font-size:1.125rem;line-height:1.45}
+  .kt-tbl-i b::before{width:8px;height:8px;margin-right:8px}
+  .kt-tbl-i small{margin-top:2px;font-size:.9375rem;line-height:1.5}
+  .kt-tbl tbody th b{font-size:1.125rem}
+  .kt-tbl tbody th small{font-size:.875rem}
+  .kt-tbl thead th{font-size:1rem}
+}
+/* 자세히 보기: 항목 아래에 상세 줄을 보인다. 이름표는 글 위에 따로 한 줄(색으로 종류 구분), 글은 칸 폭을 다 쓴다 */
+.kt-tbl-more{display:none}
+.kt-detail .kt-tbl-more{display:block;margin-top:7px;padding:8px 10px 9px;border-left:3px solid #d8c27a;border-radius:0 6px 6px 0;background:#fbf7e8}
+.kt-tbl-d{display:block;font-size:.875rem;font-weight:400;line-height:1.6;color:#2f3d38}
+.kt-tbl-d+.kt-tbl-d{margin-top:8px}
+.kt-tbl-d em{display:block;margin-bottom:1px;font-style:normal;font-size:.75rem;font-weight:800;line-height:1.4;color:#7a6418}
+.kt-tbl-d.is-warn em{color:#b0402d}
+.kt-tbl-d.is-seq em{color:#3b6b34}
+@media(max-width:600px){
+  .kt-tbl{padding:8px 8px 10px}
+  .kt-tbl table,.kt-tbl tbody,.kt-tbl tr,.kt-tbl th,.kt-tbl td{display:block}
+  .kt-tbl thead{display:none}
+  .kt-tbl tbody{margin:0 0 8px;border:1px solid #d5ddd3;border-left:4px solid var(--rc);border-radius:6px;overflow:hidden}
+  .kt-tbl .kt-fm{padding:8px 8px 6px;border-bottom:1px solid color-mix(in srgb,var(--rc) 22%,#fff)}
+  .kt-fm::before{content:none!important}
+  .kt-chip{font-size:.9375rem;padding:3px 10px}
+  .kt-tbl tbody th{border:0;padding:6px 8px}
+  .kt-tbl colgroup{display:none}
+  .kt-tbl tbody+tbody>tr:first-child>*{border-top:0}
+  .kt-tbl-fm+tr td{padding-top:6px}
+  .kt-tbl td{padding:6px 8px;border-bottom:1px solid #eef1ec}
+  .kt-tbl td::before{content:attr(data-label);display:block;font-size:.75rem;font-weight:800;color:var(--cc,#7d8c86)}
+  .kt-tbl td:empty{display:none}
+}
+
+/* PC: 연표 박스(업적·사건)와 상세 글자를 위쪽 표와 같은 크기로 맞춘다 — 제목 18px · 설명 15px · 상세 15px */
+@media(min-width:601px){
+  .kt-keys{font-size:1.125rem}
+  .kt-abox{padding:4px 9px 5px;line-height:1.45}
+  .kt-abox-t b{font-size:.85em}
+  .kt-abox-d{margin-top:2px;font-size:.8333em;line-height:1.5}
+  .kt-tbl-d{font-size:.9375rem;line-height:1.55}
+  .kt-tbl-d em{font-size:.8125rem}
+  .kt-abox-more .kt-tbl-d,.kt-band.is-xwide .kt-abox-more .kt-tbl-d,.kt-band.is-xshow .kt-abox-more .kt-tbl-d{font-size:.9375rem;line-height:1.55}
+  .kt-abox-more .kt-tbl-d em{font-size:.8125rem}
+  .kt-col-h{font-size:.875rem}
+  .kt-yr{font-size:.875rem}
+  .kt-ugroup{font-size:.8125rem}
+  .kt-name{font-size:1.0625rem}
+  .kt-name small{font-size:.8125rem}
 }
