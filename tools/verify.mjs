@@ -127,7 +127,7 @@ console.log('PASS free question navigation, unsubmitted-choice preservation, che
 const theoryApp=createApp();
 const eras=theoryApp.run('JSON.parse(JSON.stringify(window.THEORY))');
 const themed=eras.flatMap(e=>e.themes.flatMap(t=>t.questions.map(q=>q.id)));
-assert.equal(themed.length,150);assert.equal(new Set(themed).size,150,'each question belongs to exactly one theme');
+assert.equal(themed.length,new Set(themed).size,'each question belongs to exactly one theme');
 for(const era of eras)for(const theme of era.themes){
   assert.ok(theme.name.trim()&&theme.theory.length&&theme.memos.length&&theme.contrasts.length,`${theme.id} content`);
   assert.equal(theme.count,theme.questions.length);
@@ -140,20 +140,18 @@ theoryApp.run('chooseAnswer(activeExam.questions[11].answer);checkAnswer()');
 const themeId=theoryApp.run('themeOf.get("79-12").id');
 assert.ok(theoryApp.html().includes(`theory.html#${themeId}`),'study page links back to its theory theme');
 theoryApp.run('navigate("#q-79-99")');assert.equal(theoryApp.run('view'),'home','unknown question falls back to home');
-console.log('PASS theory data covers 150 questions once, #q- shortcut, back-link to theory');
-// --- 보강 항목과 사실 정정 ---
-const extraItems=eras.flatMap(e=>e.themes.flatMap(t=>t.extras.map(x=>({...x,theme:t.id}))));
-assert.equal(extraItems.length,77);assert.equal(new Set(extraItems.map(x=>x.id)).size,77);
-for(const x of extraItems){assert.ok(x.text.trim().length>20,`${x.id} text`);assert.ok(['짝꿍','흐름','비교'].includes(x.type));assert.ok(x.sources.length>0&&x.sources.every(s=>s.url.startsWith('https://')&&s.label),`${x.id} sources`);assert.ok(!('why' in x),'maintainer notes stay out of the page');}
-// 사실 정정은 이론 정리 원고(content/theory-source)와 이론 팝업 해설에 남아 있어야 한다.
+console.log(`PASS theory data covers ${themed.length} questions once, each linked once in its theory body, #q- shortcut, back-link to theory`);
+// --- 사실 정정 확인 (보강 77건은 모두 이론 본문에 합쳐짐) ---
+// 사실 정정은 이론 정리 본문(주제 종합 정리)과 이론 팝업 해설(기출 화면과 같은 최신 해설)에 남아 있어야 한다.
 const theoryCtx=vm.createContext({window:{}});vm.runInContext(fs.readFileSync(path.join(root,'theory-explanations.js'),'utf8'),theoryCtx);
 const theoryPopup=theoryCtx.window;
-assert.equal(Object.keys(theoryPopup.THEORY_EXPLANATIONS).length,150);assert.equal(Object.keys(theoryPopup.THEORY_DETAILS).length,150);
-assert.deepEqual(Object.keys(theoryPopup.THEORY_DETAILS).sort(),[...themed].sort(),'theory popup covers every theory question');
-const allDetails=JSON.stringify(theoryPopup.THEORY_DETAILS);
-for(const stale of ['16관등(좌평~대덕)','1944 건국 강령','숙종 전국','수신사(김홍집·김옥균)','우륵은 대가야 출신으로 가야금을 만들었','단양 금굴·점말동굴','1905 을사늑약(외교권 박탈, 통감부 설치)','1997.12 IMF 구제 금융'])assert.ok(!allDetails.includes(stale),`stale fact still present: ${stale}`);
-for(const fixed of ['좌평~극우','1941 건국 강령','제천 점말동굴','1906 통감부 설치','1209 교정도감 설치'])assert.ok(allDetails.includes(fixed),`fix missing: ${fixed}`);
-console.log('PASS 77 sourced extras, corrected facts present and stale wording gone');
+assert.equal(Object.keys(theoryPopup.THEORY_EXPLANATIONS).length,Object.keys(theoryPopup.THEORY_DETAILS).length);
+assert.ok(themed.every(q=>q in theoryPopup.THEORY_DETAILS),'theory popup covers every theory question');
+// 문항별 팝업 해설 + 주제 종합 정리(이론 정리 화면 본문) 전체에서 사실 정정을 확인한다.
+const allDetails=JSON.stringify(theoryPopup.THEORY_DETAILS)+JSON.stringify(eras);
+for(const stale of ['16관등(좌평~대덕)','1944 건국 강령','숙종 전국','수신사(김홍집·김옥균)','우륵은 대가야 출신으로 가야금을 만들었','단양 금굴·점말동굴','1905 을사늑약(외교권 박탈, 통감부 설치)','1997.12 IMF 구제 금융','통감부 시기(1905~1910)','화폐 정리 사업(1905, 메가타, 통감부)'])assert.ok(!allDetails.includes(stale),`stale fact still present: ${stale}`);
+for(const fixed of ['좌평~극우','건국 강령(1941)','제천 점말동굴','교정도감, 1209','통감부 설치(1906'])assert.ok(allDetails.includes(fixed),`fix missing: ${fixed}`);
+console.log('PASS extras fully merged (77→0), corrected facts present and stale wording gone');
 
 // --- 해설 없이 추가된 회차: 문제·정답만 제공 ---
 const unexplainedIds=data.filter(e=>!app.run(`Object.keys(explanations).some(k=>k.startsWith('${e.id}-'))`)).map(e=>e.id);

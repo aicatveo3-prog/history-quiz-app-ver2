@@ -1,0 +1,16 @@
+/* 북마크: 문제 화면·문제 창의 버튼, 번호 칩의 별, 북마크 탭 */
+.bookmark-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid #d5ded6;background:#fff;color:#4d6857;border-radius:9px;padding:6px 12px;font:inherit;font-size:.875rem;font-weight:700;line-height:1.4;white-space:nowrap;cursor:pointer}
+.bookmark-btn:hover{background:#faf5e2}
+.bookmark-btn.is-on{background:#fff6d9;border-color:#e3b84a;color:#7a5200}
+.bookmark-btn .bookmark-star{font-size:1.05em;line-height:1}
+.bookmark-btn.is-on .bookmark-star{color:#d99a00}
+.bookmark-btn:focus-visible{outline:3px solid #df9a26;outline-offset:2px}
+.question-tools .bookmark-btn{padding:5px 11px;font-size:.8125rem}
+.th-src.is-bm::before,.tq-chip.is-bm::before,.qd-chip.is-bm::before{content:'★';margin-right:3px;color:#d99a00;font-size:.9em}
+.bm-filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.bm-filter{border:1px solid #d5ded6;background:#fff;border-radius:999px;padding:7px 14px;font:inherit;font-size:.875rem;color:var(--ink)}
+.bm-filter[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#fff}
+.bm-filter small{opacity:.75;margin-left:2px}
+.bm-empty{padding:44px 20px;text-align:center;color:var(--muted);background:#fff;border:1px dashed #d5ded6;border-radius:14px;line-height:1.9}
+@media(max-width:720px){.qd-bm{order:2}}
+@media print{.bookmark-btn{display:none}}
