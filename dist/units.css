@@ -1,7 +1,7 @@
 /* 회차별 풀기: 모든 회차를 같은 크기의 카드 1단으로 쌓는다 */
 .exam-list{grid-template-columns:1fr;gap:14px}
 /* 단원별 풀기 · 특수 분류 화면 */
-.home-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 0 34px}
+.home-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 34px}
 .home-tabs a{position:relative;display:block;background:#fff;border:2px solid #dce4e4;border-radius:14px;padding:18px 22px 20px;text-decoration:none;color:var(--ink);transition:border-color .15s,box-shadow .15s,transform .15s}
 .home-tabs b{display:block;font-size:1.125rem;letter-spacing:-.03em;line-height:1.4}
 .home-tabs span{display:block;font-size:.8125rem;color:var(--muted);margin-top:3px}

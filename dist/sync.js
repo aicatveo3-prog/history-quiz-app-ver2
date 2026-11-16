@@ -11,8 +11,20 @@ const pending=new Map(),timers=new Map();
 
 // ---- 기록 비교 ----
 const getLocal=id=>{try{return JSON.parse(localStorage.getItem(PREFIX+id)||'null');}catch{return null;}};
-const hasWork=s=>!!s&&Array.isArray(s.answers)&&s.answers.some(a=>a!==null);
+const PERQ={solved:'solved-merged',bookmarks:'bookmarks-merged'}; // 문제별 기록(solved.js, bookmarks.js). 회차 진도와 달리 통째로 고르지 않고 문제별로 합친다.
+const hasWork=s=>!!s&&(Array.isArray(s.answers)?s.answers.some(a=>a!==null):!!s.items&&Object.keys(s.items).length>0);
 const stamp=s=>Number(s?.updatedAt)||0,done=s=>Array.isArray(s?.checked)?s.checked.filter(Boolean).length:0;
+// 문제마다 더 최근 기록을 남긴다
+function mergeSolved(a,b,name){
+  const items={...(a?.items||{})};
+  for(const [id,v] of Object.entries(b?.items||{})){const cur=items[id];if(v&&(!cur||(Number(v.at)||0)>(Number(cur.at)||0)))items[id]=v;}
+  return {kind:name,updatedAt:Math.max(stamp(a),stamp(b)),items};
+}
+function sameSolved(a,b){
+  const x=Object.entries(a?.items||{}),y=b?.items||{};
+  return x.length===Object.keys(y).length&&x.every(([id,v])=>JSON.stringify(y[id])===JSON.stringify(v));
+}
+function storeSolved(name,s){try{localStorage.setItem(PREFIX+name,JSON.stringify(s));window.dispatchEvent(new CustomEvent(PERQ[name]));}catch{}}
 // 클라우드 기록이 이기는 경우: 풀이가 있고 + (로컬이 비었거나 / 더 최근이거나 / 시각 정보가 없으면 더 많이 푼 쪽)
 function remoteWins(local,remote){
   if(!hasWork(remote))return false;if(!hasWork(local))return true;
@@ -37,8 +49,13 @@ function push(id,session){
   id=String(id);pending.set(id,session);clearTimeout(timers.get(id));timers.set(id,setTimeout(()=>flushOne(id),700));setStatus('syncing');
 }
 async function flushOne(id){
-  const s=pending.get(id);if(!s||!user)return;pending.delete(id);
-  try{await col().doc(id).set({data:JSON.stringify(s),updatedAt:stamp(s)||Date.now(),checked:done(s)});setStatus(pending.size?'syncing':'synced');}
+  let s=pending.get(id);if(!s||!user)return;pending.delete(id);
+  try{
+    if(PERQ[id]){ // 다른 기기가 먼저 올린 문제를 덮어쓰지 않도록 합쳐서 올린다
+      const doc=await col().doc(id).get();let remote=null;try{remote=JSON.parse(doc.data()?.data);}catch{}
+      const local=getLocal(id)||s;s=mergeSolved(local,remote,id);if(!sameSolved(s,local))storeSolved(id,s);
+    }
+    await col().doc(id).set({data:JSON.stringify(s),updatedAt:stamp(s)||Date.now(),checked:done(s)});setStatus(pending.size?'syncing':'synced');}
   catch(e){lastError=e?.code||String(e);console.error('[기록 저장 실패]',e);setStatus('error');}
 }
 async function flushAll(){for(const id of [...pending.keys()]){clearTimeout(timers.get(id));await flushOne(id);}}
@@ -48,6 +65,7 @@ async function pull(){
     const snap=await col().get(),seen=new Set();
     snap.forEach(d=>{
       const id=d.id,raw=d.data().data;seen.add(id);let remote=null;try{remote=JSON.parse(raw);}catch{}
+      if(PERQ[id]){const had=getLocal(id),merged=mergeSolved(had,remote,id);if(!sameSolved(merged,had))storeSolved(id,merged);if(!sameSolved(merged,remote))push(id,merged);return;}
       const local=getLocal(id),localRaw=localStorage.getItem(PREFIX+id);
       if(remoteWins(local,remote)){try{localStorage.setItem(PREFIX+id,JSON.stringify(remote));changed=true;}catch{}}
       else if(hasWork(local)&&localRaw!==raw)push(id,local);
