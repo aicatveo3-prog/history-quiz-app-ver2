@@ -112,12 +112,14 @@ const ERR={
   'auth/email-already-in-use':'이미 가입된 이메일이에요. 로그인해 주세요.','auth/user-not-found':'가입되지 않은 이메일이에요.','auth/wrong-password':'비밀번호가 맞지 않아요.',
   'auth/invalid-credential':'이메일 또는 비밀번호가 맞지 않아요.','auth/too-many-requests':'시도가 너무 많아요. 잠시 후 다시 해 주세요.','auth/network-request-failed':'네트워크 연결을 확인해 주세요.',
   'auth/popup-closed-by-user':'','auth/cancelled-popup-request':'','auth/unauthorized-domain':'이 주소는 Firebase 승인 도메인에 없어요. README의 설정 5번을 확인해 주세요.',
-  'auth/operation-not-allowed':'이 로그인 방식이 Firebase에서 꺼져 있어요. README의 설정 3번을 확인해 주세요.'
+  'auth/operation-not-allowed':'이 로그인 방식이 Firebase에서 꺼져 있어요. README의 설정 3번을 확인해 주세요.',
+  'auth/operation-not-supported-in-this-environment':'파일로 연 화면에서는 Google 로그인을 쓸 수 없어요. 이메일로 로그인하거나 GitHub 사이트에서 로그인해 주세요.'
 };
+const onFile=typeof location!=='undefined'&&location.protocol==='file:';
 let dlg=null;
 function buildDialog(){
   dlg=document.createElement('dialog');dlg.className='auth-dialog';dlg.setAttribute('aria-labelledby','auth-title');
-  dlg.innerHTML=`<form class="auth-form" novalidate><h2 id="auth-title">로그인</h2><p class="auth-lead">로그인하면 푼 기록이 계정에 저장되어, 다른 기기에서도 이어서 풀 수 있어요.</p>
+  dlg.innerHTML=`<form class="auth-form" novalidate><h2 id="auth-title">로그인</h2><p class="auth-lead">로그인하면 푼 기록이 계정에 저장되어, 다른 기기에서도 이어서 풀 수 있어요.</p>${onFile?'<p class="auth-note">파일로 연 화면이라 Google 로그인은 되지 않아요. 이메일로 로그인하거나, 위쪽 ‘기록 옮기기’로 기록을 파일로 옮기세요.</p>':''}
   <button type="button" class="auth-google">Google로 계속하기</button><p class="auth-or"><span>또는 이메일로</span></p>
   <label>이메일<input type="email" name="email" autocomplete="email" required></label>
   <label>비밀번호<input type="password" name="password" autocomplete="current-password" minlength="6" required></label>

@@ -29,3 +29,16 @@
 .auth-close{position:absolute;top:10px;right:12px;border:0;background:none;font-size:1.6rem;line-height:1;color:var(--muted,#657474);cursor:pointer;padding:4px 8px}
 @media(max-width:600px){.auth-name,.auth-status{display:none}.auth-slot{margin-left:8px}.site-nav a{padding:8px 9px}}
 @media print{.auth-slot,.auth-dialog{display:none}}
+
+/* 기록 옮기기 (transfer.js) */
+.transfer-btn{margin-left:10px;white-space:nowrap}
+.transfer-short{display:none}
+.transfer-dialog .auth-btn{border-radius:10px;min-height:44px}
+.transfer-now{margin:0;font-size:.8125rem;color:var(--muted,#657474)}
+.transfer-now b{color:var(--ink,#132b2b)}
+.transfer-result{margin:0;padding:9px 12px;border-radius:8px;background:#edf4ef;color:#1f5a3a;font-size:.8125rem;line-height:1.55}
+.transfer-result.is-bad{background:var(--redbg,#fff0f1);color:var(--red,#a52d3e)}
+.transfer-tip a{color:var(--green,#0d4945);font-weight:700}
+.auth-note{margin:0;padding:9px 12px;border-radius:8px;background:#fff6d9;color:#6b4a00;font-size:.8125rem;line-height:1.55}
+@media(max-width:600px){.transfer-btn{margin-left:6px;padding:7px 10px}.transfer-long{display:none}.transfer-short{display:inline}}
+@media print{.transfer-btn,.transfer-dialog{display:none}}
